@@ -1,6 +1,17 @@
 import { Search, Bell, ChevronDown } from 'lucide-react';
+import { useAuth } from '../../hooks/useAuth.js';
 
 function Header() {
+
+  const { user } = useAuth();
+
+  const initials = user?.nombre
+    ?.split(' ')
+    .slice(0, 2)
+    .map((part) => part[0])
+    .join('')
+    .toUpperCase() || 'TF';
+
   return (
     <header className="top">
       <div className="topsearch">
@@ -25,12 +36,12 @@ function Header() {
 
         <span className="top-divider" />
 
-        <div className="profile-summary">
-          <span className="avatar">TF</span>
+         <div className="profile-summary">
+          <span className="avatar">{initials}</span>
 
           <span className="profile-copy">
-            <strong>TaskFlow</strong>
-            <small>Sesión por configurar</small>
+            <strong>{user?.nombre || 'Usuario'}</strong>
+            <small>{user?.rol || 'USER'}</small>
           </span>
 
           <ChevronDown size={16} />

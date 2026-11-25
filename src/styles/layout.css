@@ -43,6 +43,24 @@
   line-height: 1.7;
 }
 
+/* Estados de autenticación. */
+.login-error {
+  margin: 0 0 16px;
+  color: #dc2626;
+  font-size: 13px;
+}
+
+.loginbox button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.auth-loading {
+  margin: 60px auto;
+  text-align: center;
+  color: #76859c;
+}
+
 /* Adaptación a pantallas pequeñas. */
 @media (max-width: 900px) {
   .side {

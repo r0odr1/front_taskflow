@@ -1,103 +1,55 @@
 import {
   BrowserRouter,
-  Routes,
-  Route,
   Navigate,
+  Route,
+  Routes,
 } from 'react-router-dom';
 
+import AuthProvider from './context/AuthProvider.jsx';
+import ProtectedRoute from './routes/ProtectedRoute.jsx';
 import MainLayout from './components/layout/MainLayout.jsx';
+import LoginPage from './pages/LoginPage.jsx';
 import PlaceholderPage from './pages/PlaceholderPage.jsx';
+
+const pages = [
+  ['/dashboard', 'Dashboard', 'Resumen general de tus proyectos y tareas.'],
+  ['/proyectos', 'Proyectos', 'Administra y consulta tus proyectos.'],
+  ['/tareas', 'Mis tareas', 'Organiza y consulta tus actividades.'],
+  ['/calendario', 'Calendario', 'Consulta las fechas de tus actividades.'],
+  ['/equipo', 'Equipo', 'Consulta los miembros de tus proyectos.'],
+  ['/mensajes', 'Mensajes', 'Comunicación de TaskFlow.'],
+  ['/perfil', 'Mi perfil', 'Información de tu cuenta.'],
+  ['/ajustes', 'Ajustes', 'Preferencias de la aplicación.'],
+];
 
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Navigate to="/dashboard" replace />} />
+      <AuthProvider>
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
 
-        <Route element={<MainLayout />}>
-          <Route
-            path="/dashboard"
-            element={
-              <PlaceholderPage
-                title="Dashboard"
-                description="Resumen general de tus proyectos y tareas."
-              />
-            }
-          />
+          <Route element={<ProtectedRoute />}>
+            <Route element={<MainLayout />}>
+              {pages.map(([path, title, description]) => (
+                <Route
+                  key={path}
+                  path={path}
+                  element={
+                    <PlaceholderPage
+                      title={title}
+                      description={description}
+                    />
+                  }
+                />
+              ))}
+            </Route>
+          </Route>
 
-          <Route
-            path="/proyectos"
-            element={
-              <PlaceholderPage
-                title="Proyectos"
-                description="Administra y consulta tus proyectos."
-              />
-            }
-          />
-
-          <Route
-            path="/tareas"
-            element={
-              <PlaceholderPage
-                title="Mis tareas"
-                description="Organiza tus actividades y realiza su seguimiento."
-              />
-            }
-          />
-
-          <Route
-            path="/calendario"
-            element={
-              <PlaceholderPage
-                title="Calendario"
-                description="Consulta las fechas de tus actividades."
-              />
-            }
-          />
-
-          <Route
-            path="/equipo"
-            element={
-              <PlaceholderPage
-                title="Equipo"
-                description="Consulta los miembros de tus proyectos."
-              />
-            }
-          />
-
-          <Route
-            path="/mensajes"
-            element={
-              <PlaceholderPage
-                title="Mensajes"
-                description="Espacio de comunicación de TaskFlow."
-              />
-            }
-          />
-
-          <Route
-            path="/perfil"
-            element={
-              <PlaceholderPage
-                title="Mi perfil"
-                description="Consulta la información de tu cuenta."
-              />
-            }
-          />
-
-          <Route
-            path="/ajustes"
-            element={
-              <PlaceholderPage
-                title="Ajustes"
-                description="Preferencias de la aplicación."
-              />
-            }
-          />
-        </Route>
-
-        <Route path="*" element={<Navigate to="/dashboard" replace />} />
-      </Routes>
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          <Route path="*" element={<Navigate to="/dashboard" replace />} />
+        </Routes>
+      </AuthProvider>
     </BrowserRouter>
   );
 }

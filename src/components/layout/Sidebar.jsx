@@ -1,15 +1,16 @@
-import { NavLink } from 'react-router-dom';
 import {
-  LayoutDashboard,
-  FolderKanban,
-  ListTodo,
   CalendarDays,
-  Users,
-  MessageSquare,
-  UserRound,
-  Settings,
+  FolderKanban,
+  LayoutDashboard,
+  ListTodo,
   LogOut,
+  MessageSquare,
+  Settings,
+  UserRound,
+  Users,
 } from 'lucide-react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../hooks/useAuth.js';
 
 const menu = [
   { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -40,6 +41,15 @@ function MenuLink({ path, label, icon: Icon }) {
 }
 
 function Sidebar() {
+
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login', { replace: true });
+  };
+
   return (
     <aside className="side">
       <NavLink to="/dashboard" className="brand">
@@ -69,11 +79,21 @@ function Sidebar() {
       </nav>
 
       <div className="bottom">
-        <span className="nav logout-pending">
-          <span className="ico"><LogOut size={20} /></span>
-          <span className="navlabel">Cerrar sesión</span>
-        </span>
+        <button
+          className="nav"
+          type="button"
+          onClick={handleLogout}
+        >
+          <span className="ico">
+            <LogOut size={20} strokeWidth={1.8} />
+          </span>
+
+          <span className="navlabel">
+            Cerrar sesión
+          </span>
+        </button>
       </div>
+
     </aside>
   );
 }
