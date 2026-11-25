@@ -68,6 +68,30 @@ La estructura se completará progresivamente durante el desarrollo.
 
 ## Funcionalidades
 
+### Implementadas
+
+- **Autenticación:** inicio y cierre de sesión mediante JWT.
+- **Rutas protegidas:** acceso restringido a usuarios autenticados.
+- **Gestión de sesión:** recuperación de sesión mediante Context API.
+- **Navegación:** menú lateral y encabezado reutilizables con React Router.
+- **Dashboard:** consulta de proyectos y tareas desde la API REST.
+  - Indicadores de tareas totales, en progreso, en revisión y completadas.
+  - Porcentaje de cumplimiento.
+  - Gráfica de distribución de tareas por estado.
+  - Listado de próximas tareas y actividades recientes.
+  - Manejo de estados de carga, errores y ausencia de información.
+
+### Pendientes
+
+- Gestión de proyectos desde el frontend.
+- Gestión de tareas y tablero Kanban.
+- Calendario de actividades.
+- Gestión de equipos.
+- Perfil de usuario y ajustes.
+- Despliegue de la aplicación.
+
+**Estado:** frontend en desarrollo, conectado al backend mediante Axios y autenticación JWT.
+
 La aplicación contempla los siguientes módulos:
 
 - Autenticación y gestión de sesiones.

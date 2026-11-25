@@ -10,9 +10,9 @@ import ProtectedRoute from './routes/ProtectedRoute.jsx';
 import MainLayout from './components/layout/MainLayout.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import PlaceholderPage from './pages/PlaceholderPage.jsx';
+import DashboardPage from './pages/DashboardPage.jsx';
 
 const pages = [
-  ['/dashboard', 'Dashboard', 'Resumen general de tus proyectos y tareas.'],
   ['/proyectos', 'Proyectos', 'Administra y consulta tus proyectos.'],
   ['/tareas', 'Mis tareas', 'Organiza y consulta tus actividades.'],
   ['/calendario', 'Calendario', 'Consulta las fechas de tus actividades.'],
@@ -28,9 +28,11 @@ function App() {
       <AuthProvider>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
-
+          
           <Route element={<ProtectedRoute />}>
             <Route element={<MainLayout />}>
+              <Route path="/dashboard" element={<DashboardPage />} />
+
               {pages.map(([path, title, description]) => (
                 <Route
                   key={path}

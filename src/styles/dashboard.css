@@ -1,0 +1,160 @@
+/* Dashboard: componentes y ajustes específicos. */
+.dashboard-stat {
+  min-width: 0;
+}
+
+.dashboard-stat .metric {
+  margin-top: 6px;
+}
+
+.dashboard-stat .trend {
+  display: block;
+  margin-top: 6px;
+  line-height: 1.5;
+}
+
+.dashboard-action,
+.dashboard-retry {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  text-decoration: none;
+}
+
+.dashboard-retry {
+  margin-top: 18px;
+}
+
+.dashboard-panels {
+  align-items: stretch;
+}
+
+.dashboard-panels .panel {
+  min-width: 0;
+}
+
+.dashboard-progress-value {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 30px;
+}
+
+.dashboard-progress-value strong {
+  font-size: 34px;
+  color: var(--ink);
+}
+
+.dashboard-progress-value span {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.dashboard-progress {
+  margin-top: 22px;
+}
+
+.dashboard-project-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+  color: #526987;
+}
+
+.dashboard-empty {
+  margin-top: 15px;
+}
+
+.dashboard-section {
+  margin-top: 20px;
+}
+
+.dashboard-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 12px;
+}
+
+.dashboard-section-header h2 {
+  margin-bottom: 0;
+}
+
+.dashboard-section-header a {
+  color: var(--blue);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.dashboard-section-header a:hover {
+  text-decoration: underline;
+}
+
+.dashboard-task-details {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.dashboard-task-details strong {
+  overflow-wrap: anywhere;
+}
+
+.dashboard-task-details .sub {
+  font-size: 12px;
+}
+
+.dashboard-task-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* Mantiene las gráficas y tarjetas adaptables. */
+@media (max-width: 1200px) {
+  .statgrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dashboard-panels {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .statgrid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-stat {
+    padding: 18px;
+  }
+
+  .dashboard-section .listrow,
+  .dashboard-section .feedrow {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .dashboard-task-meta {
+    flex-wrap: wrap;
+  }
+
+  .dashboard-action {
+    width: 100%;
+  }
+
+  .pagehead {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}
