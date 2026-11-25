@@ -1,0 +1,129 @@
+/* Navegación principal de React. */
+.side nav {
+  width: 100%;
+}
+
+.side a {
+  text-decoration: none;
+}
+
+.side .brand {
+  color: #fff;
+}
+
+.side .brand:hover {
+  color: #fff;
+}
+
+/* Encabezado y perfil. */
+.profile-summary {
+  cursor: default;
+}
+
+.logout-pending {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.topsearch input:disabled {
+  cursor: not-allowed;
+  background: transparent;
+}
+
+/* Contenido principal. */
+.main {
+  min-width: 0;
+}
+
+.content {
+  width: 100%;
+}
+
+.panel > .sub {
+  line-height: 1.7;
+}
+
+/* Adaptación a pantallas pequeñas. */
+@media (max-width: 900px) {
+  .side {
+    width: 210px;
+  }
+
+  .content {
+    padding: 24px 20px;
+  }
+
+  .top {
+    padding: 0 20px;
+  }
+}
+
+@media (max-width: 640px) {
+  .shell {
+    flex-direction: column;
+  }
+
+  .side {
+    position: relative;
+    width: 100%;
+    height: auto;
+    max-height: none;
+    overflow: visible;
+    padding: 0 12px 12px;
+  }
+
+  .side .brand {
+    height: 64px;
+    margin-bottom: 12px;
+  }
+
+  .side nav {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+  }
+
+  .side .nav {
+    width: auto;
+    flex-shrink: 0;
+    white-space: nowrap;
+    padding: 10px 12px;
+  }
+
+  .side small,
+  .side .bottom {
+    display: none;
+  }
+
+  .top {
+    height: auto;
+    min-height: 70px;
+    padding: 12px 16px;
+  }
+
+  .topsearch {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .topsearch input {
+    min-width: 0;
+  }
+
+  .profile-copy,
+  .top-divider {
+    display: none;
+  }
+
+  .identity {
+    gap: 8px;
+  }
+
+  .content {
+    padding: 20px 16px 36px;
+  }
+
+  .pagehead h1 {
+    font-size: 25px;
+  }
+}
