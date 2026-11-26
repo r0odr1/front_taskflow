@@ -3,7 +3,9 @@ import {
   Navigate,
   Route,
   Routes,
+  useLocation,
 } from 'react-router-dom';
+import { useEffect } from 'react';
 
 import AuthProvider from './context/AuthProvider.jsx';
 import ProtectedRoute from './routes/ProtectedRoute.jsx';
@@ -22,10 +24,36 @@ const pages = [
   ['/ajustes', 'Ajustes', 'Preferencias de la aplicación.'],
 ];
 
+const routeTitles = {
+  '/login': 'Iniciar sesión',
+  '/dashboard': 'Dashboard',
+  '/proyectos': 'Proyectos',
+  '/tareas': 'Mis tareas',
+  '/calendario': 'Calendario',
+  '/equipo': 'Equipo',
+  '/mensajes': 'Mensajes',
+  '/perfil': 'Mi perfil',
+  '/ajustes': 'Ajustes',
+};
+
+function DocumentTitle() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    const pageTitle = routeTitles[pathname];
+    document.title = pageTitle
+      ? `TaskFlow | ${pageTitle}`
+      : 'TaskFlow';
+  }, [pathname]);
+
+  return null;
+}
+
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
+        <DocumentTitle />
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           
