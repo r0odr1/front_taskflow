@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import { FolderKanban, Search, RefreshCw } from 'lucide-react';
+import { FolderKanban, Search, RefreshCw, Plus } from 'lucide-react';
 
 import ProjectCard from '../components/projects/ProjectCard.jsx';
 import { getProjects } from '../services/projectService.js';
+import ProjectFormModal from '../components/projects/ProjectFormModal.jsx';
 
 import '../styles/projects.css';
 
@@ -15,11 +16,16 @@ function ProjectsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
+
   useEffect(() => {
     const controller = new AbortController();
 
     const loadProjects = async () => {
       try {
+        setLoading(true);
+        setError('');
         const data = await getProjects(controller.signal);
 
         if (!controller.signal.aborted) {
@@ -43,7 +49,13 @@ function ProjectsPage() {
     loadProjects();
 
     return () => controller.abort();
-  }, []);
+  }, [refreshKey]);
+
+  const handleProjectCreated = () => {
+    setShowCreateModal(false);
+    setSearch('');
+    setRefreshKey((previous) => previous + 1);
+  };
 
   const filteredProjects = projects.filter((project) =>
     project.nombre.toLowerCase().includes(search.trim().toLowerCase())
@@ -59,9 +71,20 @@ function ProjectsPage() {
           </p>
         </div>
 
-        <div className="projects-counter">
-          <FolderKanban size={18} />
-          <span>{projects.length} proyectos</span>
+        <div className="projects-header-actions">
+          <div className="projects-counter">
+            <FolderKanban size={18} />
+            <span>{projects.length} proyectos</span>
+          </div>
+
+          <button
+            type="button"
+            className="btn projects-create-btn"
+            onClick={() => setShowCreateModal(true)}
+          >
+            <Plus size={18} />
+            Nuevo proyecto
+          </button>
         </div>
       </div>
 
@@ -139,6 +162,14 @@ function ProjectsPage() {
           ))}
         </div>
       )}
+
+      {showCreateModal && (
+        <ProjectFormModal
+          onClose={() => setShowCreateModal(false)}
+          onCreated={handleProjectCreated}
+        />
+      )}
+
     </>
   );
 }

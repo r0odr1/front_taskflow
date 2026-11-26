@@ -87,15 +87,21 @@ La estructura se completará progresivamente durante el desarrollo.
   - Búsqueda de proyectos por nombre.
   - Manejo de estados de carga, errores y ausencia de información.
 
+- **Creación de proyectos:** registro de nuevos proyectos desde un formulario modal.
+  - Integración con `POST /api/proyectos`.
+  - Validación de nombre, descripción y fechas.
+  - Manejo de errores y estado de guardado.
+  - Actualización automática del listado después del registro.
+
 ### Pendientes
-- Creación, consulta de detalle, actualización y eliminación de proyectos desde el frontend.
+- Consulta de detalle, actualización y eliminación de proyectos desde el frontend.
 - Gestión de tareas y tablero Kanban.
 - Calendario de actividades.
 - Gestión de equipos.
 - Perfil de usuario y ajustes.
 - Despliegue de la aplicación.
 
-**Estado:** frontend en desarrollo. La estructura inicial con React y Vite está configurada y se está incorporando la navegación y el diseño visual.
+**Estado:** frontend en desarrollo, con autenticación JWT, Dashboard conectado a la API REST y consulta y creación de proyectos implementadas.
 
 ## Backend
 

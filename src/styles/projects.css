@@ -155,3 +155,151 @@
     width: 100%;
   }
 }
+
+/* Acciones del encabezado. */
+.projects-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.projects-create-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  white-space: nowrap;
+}
+
+/* Modal de creación. */
+.project-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(13, 36, 65, 0.55);
+}
+
+.project-modal {
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 28px;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 20px 60px rgba(13, 36, 65, 0.2);
+}
+
+.project-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 26px;
+}
+
+.project-modal-header h2 {
+  margin: 0 0 8px;
+  font-size: 23px;
+}
+
+.project-modal-header p {
+  font-size: 13px;
+}
+
+.project-modal-close {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 8px;
+  background: #eff4fa;
+  color: var(--ink);
+}
+
+.project-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-bottom: 20px;
+}
+
+.project-form-field label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.project-form-field input,
+.project-form-field textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+}
+
+.project-form-field textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.project-form-field input:focus,
+.project-form-field textarea:focus {
+  outline: 2px solid #9ac5ff;
+  border-color: var(--blue);
+}
+
+.project-form-dates {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.project-form-error {
+  padding: 12px;
+  border-radius: 8px;
+  background: #fff0f1;
+  color: #c62842;
+  font-size: 13px;
+}
+
+.project-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+/* Responsive. */
+@media (max-width: 700px) {
+  .projects-header-actions {
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .project-modal {
+    padding: 20px;
+  }
+
+  .project-form-dates {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .project-modal-actions {
+    flex-direction: column-reverse;
+  }
+
+  .project-modal-actions .btn {
+    width: 100%;
+  }
+}
