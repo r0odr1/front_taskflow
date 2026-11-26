@@ -37,3 +37,19 @@ export async function getProjectById(projectId, signal) {
 
   return response.data.data;
 }
+
+/**
+ * Actualiza un proyecto del usuario propietario.
+ *
+ * @param {number} projectId
+ * @param {object} projectData
+ * @returns {Promise<object>}
+ */
+export async function updateProject(projectId, projectData) {
+  const response = await api.put(
+    `/api/proyectos/${projectId}`,
+    projectData
+  );
+
+  return response.data.data;
+}

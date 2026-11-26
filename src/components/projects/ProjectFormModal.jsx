@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
 import { X } from 'lucide-react';
 
-import { createProject } from '../../services/projectService.js';
+import {
+  createProject,
+  updateProject,
+} from '../../services/projectService.js';
 
 const initialForm = {
   nombre: '',
@@ -10,8 +13,32 @@ const initialForm = {
   fecha_fin: '',
 };
 
-function ProjectFormModal({ onClose, onCreated }) {
-  const [form, setForm] = useState(initialForm);
+function toDateInput(value) {
+  return value ? String(value).slice(0, 10) : '';
+}
+
+/**
+ * Formulario reutilizable para crear y editar proyectos.
+ */
+function ProjectFormModal({
+  project = null,
+  onClose,
+  onSaved,
+  onCreated,
+}) {
+  const isEditing = Boolean(project);
+
+  const [form, setForm] = useState(() =>
+    project
+      ? {
+          nombre: project.nombre ?? '',
+          descripcion: project.descripcion ?? '',
+          fecha_inicio: toDateInput(project.fecha_inicio),
+          fecha_fin: toDateInput(project.fecha_fin),
+        }
+      : initialForm
+  );
+
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
 
@@ -24,7 +51,9 @@ function ProjectFormModal({ onClose, onCreated }) {
 
     window.addEventListener('keydown', handleEscape);
 
-    return () => window.removeEventListener('keydown', handleEscape);
+    return () => {
+      window.removeEventListener('keydown', handleEscape);
+    };
   }, [onClose, saving]);
 
   const handleChange = (event) => {
@@ -38,6 +67,7 @@ function ProjectFormModal({ onClose, onCreated }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    if (saving) return;
 
     setError('');
 
@@ -49,23 +79,31 @@ function ProjectFormModal({ onClose, onCreated }) {
     }
 
     if (form.fecha_inicio && form.fecha_fin && form.fecha_fin < form.fecha_inicio) {
-      setError('La fecha de finalización no puede ser anterior a la inicial.');
+      setError('La fecha final no puede ser anterior a la inicial.');
       return;
     }
+
+    const projectData = {
+      nombre,
+      descripcion: form.descripcion.trim() || null,
+      fecha_inicio: form.fecha_inicio || null,
+      fecha_fin: form.fecha_fin || null,
+    };
 
     setSaving(true);
 
     try {
-      await createProject({
-        nombre,
-        descripcion: form.descripcion.trim() || null,
-        fecha_inicio: form.fecha_inicio || null,
-        fecha_fin: form.fecha_fin || null,
-      });
+      const savedProject = isEditing
+        ? await updateProject(project.id, projectData)
+        : await createProject(projectData);
 
-      onCreated();
+      if (onSaved) {
+        onSaved(savedProject);
+      } else if (onCreated) {
+        onCreated(savedProject);
+      }
     } catch (err) {
-      setError(err.response?.data?.message || 'No fue posible crear el proyecto. Intenta nuevamente.');
+      setError(err.response?.data?.message || 'No fue posible guardar el proyecto.');
     } finally {
       setSaving(false);
     }
@@ -81,9 +119,14 @@ function ProjectFormModal({ onClose, onCreated }) {
       >
         <div className="project-modal-header">
           <div>
-            <h2 id="project-modal-title">Nuevo proyecto</h2>
+            <h2 id="project-modal-title">
+              {isEditing ? 'Editar proyecto' : 'Nuevo proyecto'}
+            </h2>
+
             <p className="sub">
-              Completa la información para crear un proyecto.
+              {isEditing
+                ? 'Modifica la información del proyecto.'
+                : 'Completa la información para crear un proyecto.'}
             </p>
           </div>
 
@@ -109,11 +152,11 @@ function ProjectFormModal({ onClose, onCreated }) {
               name="nombre"
               type="text"
               maxLength={150}
-              value={form.nombre}
-              onChange={handleChange}
-              placeholder="Ej. Rediseño de plataforma"
               autoFocus
               required
+              value={form.nombre}
+              onChange={handleChange}
+              placeholder="Nombre del proyecto"
             />
           </div>
 
@@ -129,7 +172,7 @@ function ProjectFormModal({ onClose, onCreated }) {
               maxLength={5000}
               value={form.descripcion}
               onChange={handleChange}
-              placeholder="Describe el objetivo del proyecto..."
+              placeholder="Descripción del proyecto..."
             />
           </div>
 
@@ -175,8 +218,8 @@ function ProjectFormModal({ onClose, onCreated }) {
             <button
               className="btn secondary"
               type="button"
-              onClick={onClose}
               disabled={saving}
+              onClick={onClose}
             >
               Cancelar
             </button>
@@ -186,7 +229,11 @@ function ProjectFormModal({ onClose, onCreated }) {
               type="submit"
               disabled={saving}
             >
-              {saving ? 'Guardando...' : 'Crear proyecto'}
+              {saving
+                ? 'Guardando...'
+                : isEditing
+                  ? 'Guardar cambios'
+                  : 'Crear proyecto'}
             </button>
           </div>
         </form>

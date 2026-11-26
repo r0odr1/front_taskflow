@@ -104,8 +104,15 @@ La estructura se completará progresivamente durante el desarrollo.
   - Cálculo automático del porcentaje de avance.
   - Manejo de proyectos inexistentes, errores y estados de carga.
 
+- **Edición de proyectos:** modificación de proyectos propios mediante `PUT /api/proyectos/:id`.
+  - Reutilización del formulario modal de creación y edición.
+  - Precarga de la información existente.
+  - Validación de campos y fechas.
+  - Control de acceso según el propietario del proyecto.
+  - Actualización automática del detalle después de guardar.
+
 ### Pendientes
-- Actualización y eliminación de proyectos desde el frontend.
+- Eliminación de proyectos desde el frontend.
 - Gestión de tareas y tablero Kanban.
 - Calendario de actividades.
 - Gestión de equipos.

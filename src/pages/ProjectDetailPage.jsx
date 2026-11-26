@@ -12,6 +12,9 @@ import {
 
 import { getProjectById } from '../services/projectService.js';
 import { getTasksByProject } from '../services/taskService.js';
+import { Pencil } from 'lucide-react';
+import { useAuth } from '../hooks/useAuth.js';
+import ProjectFormModal from '../components/projects/ProjectFormModal.jsx';
 
 import '../styles/projects.css';
 
@@ -49,6 +52,10 @@ function ProjectDetailPage() {
   const projectId = Number(id);
   const invalidId = !Number.isSafeInteger(projectId) || projectId <= 0;
 
+  const { user } = useAuth();
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
+
   const [project, setProject] = useState(null);
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(!invalidId);
@@ -61,6 +68,8 @@ function ProjectDetailPage() {
 
     async function loadProject() {
       try {
+        setLoading(true);
+        setError('');
         const projectData = await getProjectById(
           projectId,
           controller.signal
@@ -94,7 +103,18 @@ function ProjectDetailPage() {
     loadProject();
 
     return () => controller.abort();
-  }, [projectId, invalidId]);
+  }, [projectId, invalidId, refreshKey]);
+
+  const handleProjectUpdated = () => {
+    setShowEditModal(false);
+    setRefreshKey((previous) => previous + 1);
+  };
+
+  // El backend también verifica la propiedad del proyecto.
+  const canEdit =
+    project &&
+    (project.es_propietario === true ||
+      Number(project.propietario_id) === Number(user?.id));
 
   if (invalidId || error) {
     return (
@@ -146,8 +166,21 @@ function ProjectDetailPage() {
             Información y seguimiento del proyecto.
           </p>
         </div>
+        
+        <div className="project-detail-actions">
+          <span className="tag">Proyecto #{project.id}</span>
 
-        <span className="tag">Proyecto #{project.id}</span>
+          {canEdit && (
+            <button
+              type="button"
+              className="btn project-edit-button"
+              onClick={() => setShowEditModal(true)}
+            >
+              <Pencil size={17} />
+              Editar proyecto
+            </button>
+          )}
+        </div>
       </div>
 
       <section className="panel project-detail-overview">
@@ -271,6 +304,14 @@ function ProjectDetailPage() {
           </div>
         )}
       </section>
+
+      {showEditModal && (
+        <ProjectFormModal
+          project={project}
+          onClose={() => setShowEditModal(false)}
+          onSaved={handleProjectUpdated}
+        />
+      )}
     </>
   );
 }
