@@ -303,3 +303,210 @@
     width: 100%;
   }
 }
+
+/* Navegación al detalle del proyecto. */
+.project-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.project-detail-link-text,
+.project-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--blue);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.project-detail-link-text:hover,
+.project-back-link:hover {
+  text-decoration: underline;
+}
+
+.project-back-link {
+  margin-bottom: 22px;
+}
+
+.project-detail-link {
+  display: inline-flex;
+  margin-top: 18px;
+  text-decoration: none;
+}
+
+/* Información general. */
+.project-detail-overview {
+  margin-bottom: 20px;
+}
+
+.project-detail-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--blue);
+}
+
+.project-detail-heading h2 {
+  margin: 0;
+  color: var(--ink);
+}
+
+.project-detail-description {
+  margin: 18px 0 26px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  color: #627791;
+}
+
+.project-detail-info {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.project-detail-info > div {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.project-detail-info svg {
+  flex-shrink: 0;
+  color: var(--blue);
+}
+
+.project-detail-info span {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.project-detail-info small {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.project-detail-info strong {
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+/* Indicadores de tareas. */
+.project-detail-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.project-detail-stats .panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.project-detail-stats svg {
+  color: var(--blue);
+}
+
+.project-detail-stats span {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.project-detail-stats strong {
+  font-size: 30px;
+}
+
+/* Progreso general. */
+.project-detail-progress {
+  margin-bottom: 20px;
+}
+
+.project-progress-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.project-progress-header strong {
+  font-size: 30px;
+}
+
+.project-progress-header span {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* Listado de tareas. */
+.project-task-item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.project-task-item:last-child {
+  border-bottom: 0;
+}
+
+.project-task-item > div:first-child {
+  min-width: 0;
+  flex: 1;
+}
+
+.project-task-item strong {
+  overflow-wrap: anywhere;
+}
+
+.project-task-item .sub {
+  margin-top: 8px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.project-task-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  max-width: 55%;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.project-detail-message {
+  text-align: center;
+}
+
+@media (max-width: 800px) {
+  .project-detail-info {
+    grid-template-columns: 1fr;
+  }
+
+  .project-detail-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .project-task-item {
+    flex-direction: column;
+  }
+
+  .project-task-meta {
+    max-width: 100%;
+    justify-content: flex-start;
+  }
+}

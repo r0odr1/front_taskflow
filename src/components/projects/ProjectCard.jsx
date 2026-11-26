@@ -1,4 +1,5 @@
 import { CalendarDays, FolderKanban, UserRound } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 /**
  * Tarjeta informativa de un proyecto.
@@ -60,9 +61,16 @@ function ProjectCard({ project }) {
       </div>
 
       <div className="project-card-footer">
-        <span>
-          Proyecto #{project.id}
-        </span>
+        <span>Proyecto #{project.id}</span>
+
+        <Link
+          to={`/proyectos/${project.id}`}
+          className="project-detail-link-text"
+          aria-label={`Ver detalle de ${project.nombre}`}
+        >
+          Ver detalle
+          <span aria-hidden="true">→</span>
+        </Link>
       </div>
     </article>
   );

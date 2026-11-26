@@ -14,6 +14,7 @@ import LoginPage from './pages/LoginPage.jsx';
 import PlaceholderPage from './pages/PlaceholderPage.jsx';
 import DashboardPage from './pages/DashboardPage.jsx';
 import ProjectsPage from './pages/ProjectsPage.jsx';
+import ProjectDetailPage from './pages/ProjectDetailPage.jsx';
 
 const pages = [
   ['/tareas', 'Mis tareas', 'Organiza y consulta tus actividades.'],
@@ -40,7 +41,9 @@ function DocumentTitle() {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    const pageTitle = routeTitles[pathname];
+    const pageTitle = /^\/proyectos\/\d+$/.test(pathname)
+      ? 'Detalle de proyecto'
+      : routeTitles[pathname];
     document.title = pageTitle
       ? `TaskFlow | ${pageTitle}`
       : 'TaskFlow';
@@ -61,6 +64,7 @@ function App() {
             <Route element={<MainLayout />}>
               <Route path="/dashboard" element={<DashboardPage />} />
               <Route path="/proyectos" element={<ProjectsPage />} />
+              <Route path="/proyectos/:id" element={<ProjectDetailPage />} />
 
               {pages.map(([path, title, description]) => (
                 <Route

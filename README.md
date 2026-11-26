@@ -81,6 +81,9 @@ La estructura se completará progresivamente durante el desarrollo.
   - Listado de próximas tareas y actividades recientes.
   - Manejo de estados de carga, errores y ausencia de información.
 
+- **Interfaz de autenticación:** diseño Liquid Glass adaptable a diferentes pantallas, con controles para mostrar y ocultar la contraseña.
+- **Títulos dinámicos:** actualización automática del título de la pestaña según la sección activa mediante React Router.
+
 - **Consulta de proyectos:** listado de proyectos accesibles al usuario autenticado mediante la API REST.
   - Visualización de proyectos mediante tarjetas.
   - Información de nombre, descripción, propietario y fechas.
@@ -93,8 +96,16 @@ La estructura se completará progresivamente durante el desarrollo.
   - Manejo de errores y estado de guardado.
   - Actualización automática del listado después del registro.
 
+- **Detalle de proyectos:** consulta individual mediante `GET /api/proyectos/:id`.
+  - Navegación desde las tarjetas del listado.
+  - Visualización de información general, propietario y fechas.
+  - Consulta de tareas asociadas mediante `GET /api/tareas?proyecto_id=...`.
+  - Indicadores de tareas totales, en progreso y completadas.
+  - Cálculo automático del porcentaje de avance.
+  - Manejo de proyectos inexistentes, errores y estados de carga.
+
 ### Pendientes
-- Consulta de detalle, actualización y eliminación de proyectos desde el frontend.
+- Actualización y eliminación de proyectos desde el frontend.
 - Gestión de tareas y tablero Kanban.
 - Calendario de actividades.
 - Gestión de equipos.
