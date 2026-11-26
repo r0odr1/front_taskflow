@@ -1,0 +1,157 @@
+/* Barra de herramientas de proyectos. */
+.projects-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  gap: 16px;
+}
+
+.projects-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: min(400px, 100%);
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: #fff;
+  color: var(--muted);
+}
+
+.projects-search input {
+  flex: 1;
+  min-width: 0;
+  padding: 13px 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--ink);
+}
+
+.projects-search:focus-within {
+  outline: 2px solid #9ac5ff;
+  outline-offset: 1px;
+}
+
+.projects-counter {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--blue);
+  font-weight: 600;
+}
+
+/* Tarjetas de proyectos. */
+.project-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+  min-height: 290px;
+  cursor: default;
+}
+
+.project-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.project-card-icon {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 11px;
+  background: #e6f0ff;
+  color: var(--blue);
+}
+
+.project-card h2 {
+  margin: 0;
+  overflow-wrap: anywhere;
+  color: var(--ink);
+  font-size: 18px;
+}
+
+.project-description {
+  min-height: 40px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.project-card-details {
+  display: grid;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.project-card-details > div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #65758d;
+  font-size: 12px;
+}
+
+.project-card-details svg {
+  flex-shrink: 0;
+  color: var(--blue);
+}
+
+.project-card-footer {
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* Estados y botones. */
+.projects-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 65px 25px;
+  text-align: center;
+  color: var(--muted);
+}
+
+.projects-empty h2 {
+  margin: 0;
+  color: var(--ink);
+}
+
+.projects-empty p {
+  max-width: 380px;
+}
+
+.projects-retry {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+@media (max-width: 1100px) {
+  .projects {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .projects {
+    grid-template-columns: 1fr;
+  }
+
+  .projects-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .projects-search {
+    width: 100%;
+  }
+}

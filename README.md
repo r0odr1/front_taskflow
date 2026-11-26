@@ -81,25 +81,19 @@ La estructura se completará progresivamente durante el desarrollo.
   - Listado de próximas tareas y actividades recientes.
   - Manejo de estados de carga, errores y ausencia de información.
 
-### Pendientes
+- **Consulta de proyectos:** listado de proyectos accesibles al usuario autenticado mediante la API REST.
+  - Visualización de proyectos mediante tarjetas.
+  - Información de nombre, descripción, propietario y fechas.
+  - Búsqueda de proyectos por nombre.
+  - Manejo de estados de carga, errores y ausencia de información.
 
-- Gestión de proyectos desde el frontend.
+### Pendientes
+- Creación, consulta de detalle, actualización y eliminación de proyectos desde el frontend.
 - Gestión de tareas y tablero Kanban.
 - Calendario de actividades.
 - Gestión de equipos.
 - Perfil de usuario y ajustes.
 - Despliegue de la aplicación.
-
-**Estado:** frontend en desarrollo, conectado al backend mediante Axios y autenticación JWT.
-
-La aplicación contempla los siguientes módulos:
-
-- Autenticación y gestión de sesiones.
-- Dashboard de seguimiento.
-- Administración de proyectos.
-- Gestión de tareas y tablero Kanban.
-- Calendario de actividades.
-- Perfil de usuario.
 
 **Estado:** frontend en desarrollo. La estructura inicial con React y Vite está configurada y se está incorporando la navegación y el diseño visual.
 
