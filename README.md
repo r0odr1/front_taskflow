@@ -78,6 +78,14 @@ src/
 └── main.jsx       # Punto de entrada
 ```
 
+### Configuración para Vercel
+
+El archivo `vercel.json` permite que las rutas de React Router
+funcionen correctamente al acceder directamente o recargar la página.
+
+El frontend utiliza la variable `VITE_API_URL` para conectarse
+con la API REST desplegada en Render.
+
 La estructura se completará progresivamente durante el desarrollo.
 
 ## Funcionalidades
