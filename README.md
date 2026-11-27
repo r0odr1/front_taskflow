@@ -88,6 +88,26 @@ con la API REST desplegada en Render.
 
 La estructura se completará progresivamente durante el desarrollo.
 
+## Despliegue en producción
+
+TaskFlow se encuentra desplegado mediante Vercel y Render.
+
+### Aplicación web
+
+https://taskflow-jade-ten.vercel.app
+
+El frontend está desarrollado con React y Vite, y se publica en Vercel desde la rama `main` del repositorio GitHub.
+
+La variable de entorno `VITE_API_URL` contiene la dirección del backend:
+
+https://taskflow-api-fyso.onrender.com
+
+El archivo `vercel.json` configura la redirección de las rutas hacia `index.html`, permitiendo utilizar React Router al acceder directamente a una página o recargarla.
+
+### Verificación
+
+Se realizaron pruebas funcionales de autenticación, consulta y gestión de proyectos, CRUD de tareas, tablero Kanban y navegación entre rutas.
+
 ## Funcionalidades
 
 ### Implementadas
@@ -186,8 +206,6 @@ La estructura se completará progresivamente durante el desarrollo.
 - Calendario de actividades.
 - Gestión de equipos.
 - Perfil de usuario y ajustes.
-- Despliegue de la aplicación.
-
 
 **Estado:** frontend funcional con autenticación JWT, Dashboard integrado con la API REST, CRUD de proyectos y tareas implementados, y tablero Kanban con filtros y cambio rápido
 de estado. Pendientes las pruebas finales, los ajustes visuales y las funcionalidades adicionales.
