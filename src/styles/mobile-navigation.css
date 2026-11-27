@@ -86,6 +86,17 @@
     padding: 0;
     background: rgba(7, 22, 44, 0.55);
     cursor: default;
+    opacity: 0;
+    transition: opacity 360ms ease;
+  }
+
+  .mobile-sheet-backdrop.is-visible {
+    opacity: 1;
+  }
+
+  .mobile-sheet-backdrop.is-closing {
+    opacity: 0;
+    pointer-events: none;
   }
 
   /* Menú que aparece desde abajo. */
@@ -106,31 +117,33 @@
 
     box-shadow: 0 -12px 45px rgba(7, 22, 44, 0.18);
         
-    transform: translateY(var(--sheet-offset, 0px));
-    transition: transform 180ms ease-out;
+    /* El panel comienza oculto debajo de la pantalla. */
+    transform: translate3d(0, 100%, 0);
 
-    animation-name: taskflow-sheet-in;
-    animation-duration: 480ms;
-    animation-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
-    animation-fill-mode: both;
+    /* Una única transición para abrir y cerrar. */
+    transition: transform 360ms cubic-bezier(0.32, 0.72, 0, 1);
+
+    will-change: transform;
   }
 
-  /* Libera el transform cuando termina la apertura. */
-  .mobile-sheet.has-opened:not(.is-closing) {
-    animation: none;
+  /* Apertura: el panel se desplaza hacia arriba. */
+  .mobile-sheet.is-visible {
+    transform: translate3d(
+      0,
+      var(--sheet-offset, 0px),
+      0
+    );
   }
 
-  /* Mientras el usuario arrastra, el panel sigue el dedo. */
+  /* Arrastre: sigue el movimiento del dedo sin retraso. */
   .mobile-sheet.is-dragging {
-    animation: none;
     transition: none;
   }
 
-  /* Salida animada del panel. */
+  /* Cierre: vuelve debajo de la pantalla. */
   .mobile-sheet.is-closing {
+    transform: translate3d(0, 100%, 0);
     pointer-events: none;
-    transition: none;
-    animation: taskflow-sheet-out 260ms ease-in forwards;
   }
 
   /* Oscurecimiento del fondo al abrir el menú. */
@@ -309,13 +322,10 @@
       opacity: 0;
     }
   }
-
+  
   @media (prefers-reduced-motion: reduce) {
     .mobile-sheet,
-    .mobile-sheet.is-closing,
-    .mobile-sheet-backdrop,
-    .mobile-sheet-backdrop.is-closing {
-      animation-duration: 1ms;
+    .mobile-sheet-backdrop {
       transition-duration: 0ms;
     }
   }

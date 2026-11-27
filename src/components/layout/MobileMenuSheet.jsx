@@ -34,7 +34,26 @@ function MobileMenuSheet({
 
   const [dragY, setDragY] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
-  const [hasOpened, setHasOpened] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+
+  // Inicia la transición después de que el panel se monta.
+  useEffect(() => {
+    let secondFrame;
+
+    const firstFrame = requestAnimationFrame(() => {
+      secondFrame = requestAnimationFrame(() => {
+        setIsVisible(true);
+      });
+    });
+
+    return () => {
+      cancelAnimationFrame(firstFrame);
+
+      if (secondFrame !== undefined) {
+        cancelAnimationFrame(secondFrame);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     const previousOverflow = document.body.style.overflow;
@@ -143,8 +162,8 @@ function MobileMenuSheet({
       <button
         type="button"
         className={`mobile-sheet-backdrop ${
-          closing ? 'is-closing' : ''
-        }`}
+          isVisible ? 'is-visible' : ''
+        } ${closing ? 'is-closing' : ''}`}
         onClick={onRequestClose}
         aria-label="Cerrar menú de opciones"
       />
@@ -152,9 +171,9 @@ function MobileMenuSheet({
       <section
         ref={dialogRef}
         className={`mobile-sheet ${
-          closing ? 'is-closing' : ''
-        } ${isDragging ? 'is-dragging' : ''} ${
-          hasOpened ? 'has-opened' : ''
+          isVisible ? 'is-visible' : ''
+        } ${closing ? 'is-closing' : ''} ${
+          isDragging ? 'is-dragging' : ''
         }`}
         style={{
           '--sheet-offset': `${dragY}px`,
@@ -162,11 +181,6 @@ function MobileMenuSheet({
         role="dialog"
         aria-modal="true"
         aria-labelledby="mobile-sheet-title"
-        onAnimationEnd={(event) => {
-          if (event.animationName === 'taskflow-sheet-in') {
-            setHasOpened(true);
-          }
-        }}
       >
         <div
           className="mobile-sheet-drag-area"

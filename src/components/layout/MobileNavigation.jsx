@@ -14,7 +14,7 @@ import {
 import { useAuth } from '../../hooks/useAuth.js';
 import MobileMenuSheet from './MobileMenuSheet.jsx';
 
-const CLOSE_DURATION = 260;
+const CLOSE_DURATION = 380;
 
 const primaryLinks = [
   { path: '/dashboard', label: 'Inicio', icon: LayoutDashboard },
