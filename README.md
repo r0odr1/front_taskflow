@@ -202,6 +202,16 @@ Se realizaron pruebas funcionales de autenticación, consulta y gestión de proy
   - Manejo de errores durante la eliminación.
   - Actualización automática del tablero y sus contadores.
 
+- **Navegación móvil:** barra inferior adaptable para pantallas pequeñas.
+  - Accesos directos a Dashboard, Proyectos y Tareas.
+  - Menú secundario desplegable tipo Bottom Sheet.
+  - Acceso a Calendario, Equipo, Mensajes, Perfil y Ajustes.
+  - Cierre de sesión desde el menú móvil.
+  - Identificación visual de la ruta activa.
+  - Cierre del menú mediante Escape y pulsación fuera del panel.
+  - Conservación del Sidebar original en escritorio.
+  - Adaptación al área segura inferior de dispositivos móviles.
+
 ### Pendientes
 - Calendario de actividades.
 - Gestión de equipos.

@@ -1,0 +1,224 @@
+/* Navegación móvil: oculta por defecto en escritorio. */
+.mobile-navigation,
+.mobile-sheet-layer {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  /* Barra inferior fija. */
+  .mobile-navigation {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1100;
+
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    align-items: center;
+    gap: 4px;
+
+    min-height: 72px;
+    padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
+
+    background: #0d2441;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 -8px 28px rgba(7, 27, 51, 0.12);
+  }
+
+  .mobile-navigation-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+
+    min-width: 0;
+    min-height: 54px;
+    padding: 7px 3px;
+
+    border: 0;
+    border-radius: 11px;
+    background: transparent;
+    color: #c7d5e7;
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 500;
+
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .mobile-navigation-item span {
+    overflow: hidden;
+    max-width: 100%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .mobile-navigation-item.active {
+    background: #2875e7;
+    color: #fff;
+    font-weight: 600;
+  }
+
+  .mobile-navigation-item:focus-visible,
+  .mobile-sheet-link:focus-visible,
+  .mobile-sheet-close:focus-visible {
+    outline: 2px solid #6fb7ff;
+    outline-offset: 2px;
+  }
+
+  /* Capa del panel desplegable. */
+  .mobile-sheet-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 1200;
+    display: block;
+  }
+
+  .mobile-sheet-backdrop {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    padding: 0;
+    background: rgba(7, 22, 44, 0.55);
+    cursor: default;
+  }
+
+  /* Menú que aparece desde abajo. */
+  .mobile-sheet {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    max-height: min(80dvh, 520px);
+    overflow-y: auto;
+
+    padding: 12px 20px calc(26px + env(safe-area-inset-bottom));
+
+    border-radius: 24px 24px 0 0;
+    background: #fff;
+    color: #182a45;
+
+    box-shadow: 0 -12px 45px rgba(7, 22, 44, 0.18);
+    animation: taskflow-sheet-in 220ms ease-out;
+  }
+
+  .mobile-sheet-handle {
+    width: 42px;
+    height: 5px;
+    margin: 0 auto 22px;
+    border-radius: 100px;
+    background: #d5deeb;
+  }
+
+  .mobile-sheet-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 22px;
+  }
+
+  .mobile-sheet-header h2 {
+    margin: 0 0 5px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #182a45;
+  }
+
+  .mobile-sheet-header p {
+    margin: 0;
+    color: #71829a;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .mobile-sheet-close {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border: 0;
+    border-radius: 10px;
+    background: #f1f5fb;
+    color: #526987;
+  }
+
+  /* Opciones secundarias. */
+  .mobile-sheet-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .mobile-sheet-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+
+    min-width: 0;
+    min-height: 95px;
+    padding: 12px 6px;
+
+    border: 1px solid #e3eaf5;
+    border-radius: 15px;
+    background: #f7f9fd;
+    color: #526987;
+
+    text-align: center;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .mobile-sheet-link span {
+    overflow-wrap: anywhere;
+  }
+
+  .mobile-sheet-link svg {
+    color: #2875e7;
+  }
+
+  .mobile-sheet-link.active {
+    border-color: #b9d5fb;
+    background: #eaf3ff;
+    color: #175fce;
+  }
+
+  .mobile-sheet-logout {
+    color: #c62842;
+    background: #fff4f5;
+    border-color: #ffe0e4;
+  }
+
+  .mobile-sheet-logout svg {
+    color: #c62842;
+  }
+
+  @keyframes taskflow-sheet-in {
+    from {
+      opacity: 0.7;
+      transform: translateY(30px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-sheet {
+      animation: none;
+    }
+  }
+}

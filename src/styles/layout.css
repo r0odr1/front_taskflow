@@ -81,35 +81,8 @@
     flex-direction: column;
   }
 
+  /* El menú lateral se sustituye por la navegación inferior. */
   .side {
-    position: relative;
-    width: 100%;
-    height: auto;
-    max-height: none;
-    overflow: visible;
-    padding: 0 12px 12px;
-  }
-
-  .side .brand {
-    height: 64px;
-    margin-bottom: 12px;
-  }
-
-  .side nav {
-    display: flex;
-    gap: 6px;
-    overflow-x: auto;
-  }
-
-  .side .nav {
-    width: auto;
-    flex-shrink: 0;
-    white-space: nowrap;
-    padding: 10px 12px;
-  }
-
-  .side small,
-  .side .bottom {
     display: none;
   }
 
@@ -138,7 +111,7 @@
   }
 
   .content {
-    padding: 20px 16px 36px;
+    padding: 20px 16px calc(110px + env(safe-area-inset-bottom));
   }
 
   .pagehead h1 {

@@ -4,6 +4,7 @@ import { createRoot } from 'react-dom/client';
 import './index.css';
 import './styles/legacy.css';
 import './styles/layout.css';
+import './styles/mobile-navigation.css';
 
 import App from './App.jsx';
 
