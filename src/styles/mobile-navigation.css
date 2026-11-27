@@ -146,17 +146,6 @@
     pointer-events: none;
   }
 
-  /* Oscurecimiento del fondo al abrir el menú. */
-  .mobile-sheet-backdrop {
-    animation: taskflow-backdrop-in 220ms ease-out both;
-  }
-
-  /* Desvanecimiento del fondo al cerrar el menú. */
-  .mobile-sheet-backdrop.is-closing {
-    pointer-events: none;
-    animation: taskflow-backdrop-out 260ms ease-in forwards;
-  }
-
   /* Zona táctil para deslizar el panel. */
   .mobile-sheet-drag-area {
     display: flex;
@@ -274,55 +263,6 @@
     color: #c62842;
   }
 
-  
-  /* Entrada: el panel sube desde fuera de la pantalla. */  
-  @keyframes taskflow-sheet-in {
-    0% {
-      transform: translate3d(0, 100%, 0);
-      opacity: 1;
-    }
-
-    100% {
-      transform: translate3d(0, 0, 0);
-      opacity: 1;
-    }
-  }
-
-  /* Salida: el panel baja desde su posición actual. */
-  @keyframes taskflow-sheet-out {
-    from {
-      opacity: 1;
-      transform: translateY(var(--sheet-offset, 0px));
-    }
-
-    to {
-      opacity: 0.95;
-      transform: translateY(100%);
-    }
-  }
-
-  /* Fondo al abrir. */
-  @keyframes taskflow-backdrop-in {
-    from {
-      opacity: 0;
-    }
-
-    to {
-      opacity: 1;
-    }
-  }
-
-  /* Fondo al cerrar. */
-  @keyframes taskflow-backdrop-out {
-    from {
-      opacity: 1;
-    }
-
-    to {
-      opacity: 0;
-    }
-  }
-  
   @media (prefers-reduced-motion: reduce) {
     .mobile-sheet,
     .mobile-sheet-backdrop {
