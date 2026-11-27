@@ -15,6 +15,8 @@ import { useAuth } from '../../hooks/useAuth.js';
 import MobileMenuSheet from './MobileMenuSheet.jsx';
 
 const CLOSE_DURATION = 380;
+const SCROLL_THRESHOLD = 14;
+const TOP_SCROLL_THRESHOLD = 16;
 
 const primaryLinks = [
   { path: '/dashboard', label: 'Inicio', icon: LayoutDashboard },
@@ -33,6 +35,7 @@ const secondaryPaths = [
 function MobileNavigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
+  const [isNavigationVisible, setIsNavigationVisible] = useState(true);
 
   const { pathname } = useLocation();
   const navigate = useNavigate();
@@ -43,6 +46,7 @@ function MobileNavigation() {
   const openMenu = () => {
     if (isMenuOpen) return;
 
+    setIsNavigationVisible(true);
     setIsClosing(false);
     setIsMenuOpen(true);
   };
@@ -65,6 +69,61 @@ function MobileNavigation() {
     return () => window.clearTimeout(timeout);
   }, [isClosing]);
 
+  useEffect(() => {
+    const mobileViewport = window.matchMedia('(max-width: 640px)');
+    let lastScrollY = window.scrollY;
+    let accumulatedDistance = 0;
+    let lastDirection = 0;
+
+    const resetScrollTracking = () => {
+      lastScrollY = window.scrollY;
+      accumulatedDistance = 0;
+      lastDirection = 0;
+    };
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      const distance = currentScrollY - lastScrollY;
+
+      lastScrollY = currentScrollY;
+
+      if (!mobileViewport.matches || isMenuOpen || currentScrollY <= TOP_SCROLL_THRESHOLD) {
+        setIsNavigationVisible(true);
+        resetScrollTracking();
+        return;
+      }
+
+      if (distance === 0) return;
+
+      const direction = Math.sign(distance);
+
+      if (direction !== lastDirection) {
+        accumulatedDistance = 0;
+        lastDirection = direction;
+      }
+
+      accumulatedDistance += Math.abs(distance);
+
+      if (accumulatedDistance >= SCROLL_THRESHOLD) {
+        setIsNavigationVisible(direction < 0);
+        accumulatedDistance = 0;
+      }
+    };
+
+    const handleResize = () => {
+      resetScrollTracking();
+      setIsNavigationVisible(true);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [isMenuOpen]);
+
   const handleLogout = () => {
     logout();
     navigate('/login', { replace: true });
@@ -73,7 +132,9 @@ function MobileNavigation() {
   return (
     <>
       <nav
-        className="mobile-navigation"
+        className={`mobile-navigation ${
+          isNavigationVisible || isMenuOpen ? '' : 'is-hidden'
+        }`}
         aria-label="Navegación móvil principal"
       >
         {primaryLinks.map(({ path, label, icon: Icon }) => (
