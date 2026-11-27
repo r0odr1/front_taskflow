@@ -1,9 +1,9 @@
-import { CalendarDays, FolderKanban, Pencil, UserRound } from 'lucide-react';
+import { CalendarDays, FolderKanban, Pencil, Trash2, UserRound } from 'lucide-react';
 
 /**
  * Tarjeta de tarea dentro del tablero Kanban.
  */
-function TaskCard({ task, onEdit, onStatusChange, updating = false, }) {
+function TaskCard({ task, onEdit, onDelete, onStatusChange, updating = false, }) {
   const formatDate = (value) => {
     if (!value) return 'Sin fecha';
 
@@ -46,17 +46,35 @@ function TaskCard({ task, onEdit, onStatusChange, updating = false, }) {
       </div>
 
       <h3>{task.titulo}</h3>
+      
+      {(onEdit || onDelete) && (
+        <div className="task-card-actions">
+          {onEdit && (
+            <button
+              type="button"
+              className="task-card-edit"
+              onClick={() => onEdit(task)}
+              disabled={updating}
+              aria-label={`Editar tarea ${task.titulo}`}
+            >
+              <Pencil size={14} />
+              Editar tarea
+            </button>
+          )}
 
-      {onEdit && (
-        <button
-          type="button"
-          className="task-card-edit"
-          onClick={() => onEdit(task)}
-          aria-label={`Editar tarea ${task.titulo}`}
-        >
-          <Pencil size={14} />
-          Editar tarea
-        </button>
+          {onDelete && (
+            <button
+              type="button"
+              className="task-card-delete"
+              onClick={() => onDelete(task)}
+              disabled={updating}
+              aria-label={`Eliminar tarea ${task.titulo}`}
+            >
+              <Trash2 size={14} />
+              Eliminar
+            </button>
+          )}
+        </div>
       )}
 
       {onStatusChange && (

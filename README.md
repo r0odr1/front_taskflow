@@ -167,15 +167,22 @@ La estructura se completará progresivamente durante el desarrollo.
   - Actualización automática del tablero después de guardar.
   - Manejo de errores durante la actualización.
 
+- **Eliminación de tareas:** eliminación de tareas mediante `DELETE /api/tareas/:id`.
+  - Botón de eliminación en las tarjetas del tablero Kanban.
+  - Modal de confirmación antes de eliminar.
+  - Restricción de la operación al propietario del proyecto.
+  - Manejo de errores durante la eliminación.
+  - Actualización automática del tablero y sus contadores.
+
 ### Pendientes
-- Eliminación de tareas desde el tablero Kanban.
 - Calendario de actividades.
 - Gestión de equipos.
 - Perfil de usuario y ajustes.
 - Despliegue de la aplicación.
 
-**Estado:** frontend en desarrollo, con autenticación JWT, Dashboard integrado con la API REST, CRUD de proyectos implementado y tablero Kanban con consulta y filtrado
-de tareas. Pendiente completar las operaciones CRUD de tareas.
+
+**Estado:** frontend funcional con autenticación JWT, Dashboard integrado con la API REST, CRUD de proyectos y tareas implementados, y tablero Kanban con filtros y cambio rápido
+de estado. Pendientes las pruebas finales, los ajustes visuales y las funcionalidades adicionales.
 
 ## Backend
 

@@ -58,3 +58,17 @@ export async function updateTask(taskId, taskData) {
 
   return response.data.data;
 }
+
+/**
+ * Elimina una tarea de un proyecto propio.
+ *
+ * @param {number} taskId
+ * @returns {Promise<object>}
+ */
+export async function deleteTask(taskId) {
+  const response = await api.delete(
+    `/api/tareas/${taskId}`
+  );
+
+  return response.data.data;
+}

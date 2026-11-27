@@ -11,6 +11,7 @@ import {
 } from '../reducers/tasksReducer.js';
 import { useAuth } from '../hooks/useAuth.js';
 import TaskFormModal from '../components/tasks/TaskFormModal.jsx';
+import DeleteTaskModal from '../components/tasks/DeleteTaskModal.jsx';
 
 import '../styles/tasks.css';
 
@@ -45,6 +46,7 @@ function TasksPage() {
   const { user } = useAuth();
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
+  const [deletingTask, setDeletingTask] = useState(null);
 
   const [updatingTaskId, setUpdatingTaskId] = useState(null);
   const [statusError, setStatusError] = useState('');
@@ -124,6 +126,16 @@ function TasksPage() {
 
   const handleTaskUpdated = () => {
     setEditingTask(null);
+    handleRefresh();
+  };
+
+  /**
+   * Cierra la confirmación y actualiza el tablero
+   * después de eliminar una tarea correctamente.
+   */
+  const handleTaskDeleted = () => {
+    setDeletingTask(null);
+    setStatusError('');
     handleRefresh();
   };
 
@@ -335,6 +347,16 @@ function TasksPage() {
                               ? setEditingTask
                               : undefined
                           }
+
+                          onDelete={
+                            ownedProjects.some(
+                              (project) =>
+                                Number(project.id) === Number(task.proyecto_id)
+                            )
+                              ? setDeletingTask
+                              : undefined
+                          }
+
                           onStatusChange={
                             ownedProjects.some(
                               (project) =>
@@ -386,6 +408,15 @@ function TasksPage() {
         <div className="project-form-error tasks-status-error" role="alert">
           {statusError}
         </div>
+      )}
+
+      {deletingTask && (
+        <DeleteTaskModal
+          key={deletingTask.id}
+          task={deletingTask}
+          onClose={() => setDeletingTask(null)}
+          onDeleted={handleTaskDeleted}
+        />
       )}
     </>
   );

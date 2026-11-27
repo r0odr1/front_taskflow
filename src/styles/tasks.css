@@ -360,3 +360,95 @@
 .tasks-status-error {
   margin-bottom: 18px;
 }
+
+/* Acciones de edición y eliminación. */
+.task-card-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.task-card-actions .task-card-edit {
+  margin-bottom: 0;
+}
+
+.task-card-delete {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #dc3545;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.task-card-delete:hover {
+  text-decoration: underline;
+}
+
+.task-card-delete:disabled,
+.task-card-edit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.task-card-delete:focus-visible {
+  outline: 2px solid #dc3545;
+  outline-offset: 4px;
+  border-radius: 3px;
+}
+
+/* Modal de confirmación. */
+.task-delete-modal {
+  max-width: 490px;
+}
+
+.task-delete-icon {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: #fff0f1;
+  color: #dc3545;
+}
+
+.task-delete-modal h2 {
+  margin: 0 0 14px;
+  font-size: 23px;
+}
+
+.task-delete-description {
+  margin-bottom: 24px;
+  color: #627791;
+  font-size: 14px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+.task-delete-description strong {
+  color: var(--ink);
+}
+
+.task-delete-confirm {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  background: #dc3545;
+  color: #fff;
+}
+
+.task-delete-confirm:hover:not(:disabled) {
+  background: #b42332;
+}
+
+.task-delete-confirm:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
