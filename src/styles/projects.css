@@ -532,3 +532,68 @@
     justify-content: flex-start;
   }
 }
+
+/* Eliminación de proyectos. */
+.project-delete-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  border: 1px solid #dc3545;
+  background: #fff;
+  color: #dc3545;
+}
+
+.project-delete-button:hover {
+  background: #fff1f2;
+}
+
+.project-delete-modal {
+  max-width: 490px;
+}
+
+.project-delete-icon {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: #fff0f1;
+  color: #dc3545;
+}
+
+.project-delete-modal h2 {
+  margin: 0 0 14px;
+  color: var(--ink);
+  font-size: 23px;
+}
+
+.project-delete-description {
+  margin-bottom: 24px;
+  color: #627791;
+  font-size: 14px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+.project-delete-description strong {
+  color: var(--ink);
+}
+
+.project-delete-confirm {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  background: #dc3545;
+  color: #fff;
+}
+
+.project-delete-confirm:hover:not(:disabled) {
+  background: #b42332;
+}
+
+.project-delete-confirm:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}

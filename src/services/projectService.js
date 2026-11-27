@@ -53,3 +53,17 @@ export async function updateProject(projectId, projectData) {
 
   return response.data.data;
 }
+
+/**
+ * Elimina un proyecto del usuario propietario.
+ *
+ * @param {number} projectId
+ * @returns {Promise<object>}
+ */
+export async function deleteProject(projectId) {
+  const response = await api.delete(
+    `/api/proyectos/${projectId}`
+  );
+
+  return response.data.data;
+}

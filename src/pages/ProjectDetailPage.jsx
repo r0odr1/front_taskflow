@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import {
   ArrowLeft,
   CalendarDays,
@@ -15,6 +15,8 @@ import { getTasksByProject } from '../services/taskService.js';
 import { Pencil } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth.js';
 import ProjectFormModal from '../components/projects/ProjectFormModal.jsx';
+import { Trash2 } from 'lucide-react';
+import DeleteProjectModal from '../components/projects/DeleteProjectModal.jsx';
 
 import '../styles/projects.css';
 
@@ -60,6 +62,9 @@ function ProjectDetailPage() {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(!invalidId);
   const [error, setError] = useState('');
+
+  const navigate = useNavigate();
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   useEffect(() => {
     if (invalidId) return;
@@ -110,6 +115,11 @@ function ProjectDetailPage() {
     setRefreshKey((previous) => previous + 1);
   };
 
+  const handleProjectDeleted = () => {
+    setShowDeleteModal(false);
+    navigate('/proyectos', { replace: true });
+  };
+
   // El backend también verifica la propiedad del proyecto.
   const canEdit =
     project &&
@@ -138,13 +148,9 @@ function ProjectDetailPage() {
     );
   }
 
-  const completed = tasks.filter(
-    (task) => task.estado === 'COMPLETADA'
-  ).length;
+  const completed = tasks.filter((task) => task.estado === 'COMPLETADA').length;
 
-  const inProgress = tasks.filter(
-    (task) => task.estado === 'EN_PROGRESO'
-  ).length;
+  const inProgress = tasks.filter((task) => task.estado === 'EN_PROGRESO').length;
 
   const total = tasks.length;
 
@@ -178,6 +184,17 @@ function ProjectDetailPage() {
             >
               <Pencil size={17} />
               Editar proyecto
+            </button>
+          )}
+
+          {canEdit && (
+            <button
+              type="button"
+              className="btn project-delete-button"
+              onClick={() => setShowDeleteModal(true)}
+            >
+              <Trash2 size={17} />
+              Eliminar proyecto
             </button>
           )}
         </div>
@@ -310,6 +327,14 @@ function ProjectDetailPage() {
           project={project}
           onClose={() => setShowEditModal(false)}
           onSaved={handleProjectUpdated}
+        />
+      )}
+
+      {showDeleteModal && (
+        <DeleteProjectModal
+          project={project}
+          onClose={() => setShowDeleteModal(false)}
+          onDeleted={handleProjectDeleted}
         />
       )}
     </>

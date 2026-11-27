@@ -31,13 +31,27 @@ npm install
 
 ## Ejecución
 
-Iniciar el servidor de desarrollo:
+### Configuración local
+
+Para ejecutar TaskFlow, es necesario tener configurados
+y en funcionamiento el backend y la base de datos PostgreSQL.
+
+El frontend requiere configurar localmente la variable
+`VITE_API_URL` con la dirección de la API REST.
+
+Las credenciales y demás valores privados de configuración
+no se incluyen en el repositorio.
+
+### Iniciar la aplicación
+
+Ejecutar el servidor de desarrollo:
 
 ```bash
 npm run dev
 ```
 
-Abrir la dirección local indicada por Vite, normalmente:
+Abrir la dirección local indicada por Vite,
+normalmente:
 
 http://localhost:5173
 
@@ -111,19 +125,31 @@ La estructura se completará progresivamente durante el desarrollo.
   - Control de acceso según el propietario del proyecto.
   - Actualización automática del detalle después de guardar.
 
+
+- **Eliminación de proyectos:** eliminación de proyectos propios mediante `DELETE /api/proyectos/:id`.
+  - Confirmación mediante formulario modal.
+  - Validación del nombre exacto del proyecto.
+  - Advertencia sobre la eliminación de tareas asociadas.
+  - Restricción de la operación al propietario.
+  - Redirección automática al listado después de eliminar.
+  - Manejo de errores del servidor.
+
 ### Pendientes
-- Eliminación de proyectos desde el frontend.
 - Gestión de tareas y tablero Kanban.
 - Calendario de actividades.
 - Gestión de equipos.
 - Perfil de usuario y ajustes.
 - Despliegue de la aplicación.
 
-**Estado:** frontend en desarrollo, con autenticación JWT, Dashboard conectado a la API REST y consulta y creación de proyectos implementadas.
+
+**Estado:** frontend en desarrollo, con autenticación JWT,
+Dashboard conectado a la API REST y CRUD de proyectos
+implementado. Pendiente completar la gestión de tareas
+y las funcionalidades adicionales.
 
 ## Backend
 
-El frontend consumirá una API REST desarrollada con Node.js, Express y PostgreSQL, utilizando JWT para la autenticación.
+El frontend consume una API REST desarrollada con Node.js, Express y PostgreSQL. La autenticación utiliza JWT y las operaciones de proyectos y tareas se realizan mediante peticiones HTTP con Axios. Los endpoints están documentados con Swagger.
 
 Repositorio:
 
