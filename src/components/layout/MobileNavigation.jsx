@@ -1,14 +1,20 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   FolderKanban,
+  Grid2X2,
   LayoutDashboard,
   ListTodo,
-  Grid2X2,
 } from 'lucide-react';
-import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import {
+  NavLink,
+  useLocation,
+  useNavigate,
+} from 'react-router-dom';
 
 import { useAuth } from '../../hooks/useAuth.js';
 import MobileMenuSheet from './MobileMenuSheet.jsx';
+
+const CLOSE_DURATION = 380;
 
 const primaryLinks = [
   { path: '/dashboard', label: 'Inicio', icon: LayoutDashboard },
@@ -24,11 +30,9 @@ const secondaryPaths = [
   '/ajustes',
 ];
 
-/**
- * Barra inferior exclusiva para navegación móvil.
- */
 function MobileNavigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
 
   const { pathname } = useLocation();
   const navigate = useNavigate();
@@ -36,10 +40,32 @@ function MobileNavigation() {
 
   const isSecondaryActive = secondaryPaths.includes(pathname);
 
-  const closeMenu = () => setIsMenuOpen(false);
+  const openMenu = () => {
+    if (isMenuOpen) return;
+
+    setIsClosing(false);
+    setIsMenuOpen(true);
+  };
+
+  const requestClose = () => {
+    if (!isClosing) {
+      setIsClosing(true);
+    }
+  };
+
+  // Garantiza el cierre aunque animationend no se dispare.
+  useEffect(() => {
+    if (!isClosing) return undefined;
+
+    const timeout = window.setTimeout(() => {
+      setIsMenuOpen(false);
+      setIsClosing(false);
+    }, CLOSE_DURATION);
+
+    return () => window.clearTimeout(timeout);
+  }, [isClosing]);
 
   const handleLogout = () => {
-    closeMenu();
     logout();
     navigate('/login', { replace: true });
   };
@@ -54,9 +80,10 @@ function MobileNavigation() {
           <NavLink
             key={path}
             to={path}
-            onClick={closeMenu}
             className={({ isActive }) =>
-              `mobile-navigation-item ${isActive ? 'active' : ''}`
+              `mobile-navigation-item ${
+                isActive ? 'active' : ''
+              }`
             }
           >
             <Icon size={22} strokeWidth={1.9} />
@@ -69,10 +96,9 @@ function MobileNavigation() {
           className={`mobile-navigation-item ${
             isMenuOpen || isSecondaryActive ? 'active' : ''
           }`}
-          onClick={() => setIsMenuOpen((previous) => !previous)}
-          aria-expanded={isMenuOpen}
+          onClick={isMenuOpen ? requestClose : openMenu}
+          aria-expanded={isMenuOpen && !isClosing}
           aria-haspopup="dialog"
-          aria-controls="taskflow-mobile-sheet"
         >
           <Grid2X2 size={22} strokeWidth={1.9} />
           <span>Más</span>
@@ -80,12 +106,11 @@ function MobileNavigation() {
       </nav>
 
       {isMenuOpen && (
-        <div id="taskflow-mobile-sheet">
-          <MobileMenuSheet
-            onClose={closeMenu}
-            onLogout={handleLogout}
-          />
-        </div>
+        <MobileMenuSheet
+          closing={isClosing}
+          onRequestClose={requestClose}
+          onLogout={handleLogout}
+        />
       )}
     </>
   );

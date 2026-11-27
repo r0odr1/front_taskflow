@@ -211,6 +211,12 @@ Se realizaron pruebas funcionales de autenticación, consulta y gestión de proy
   - Cierre del menú mediante Escape y pulsación fuera del panel.
   - Conservación del Sidebar original en escritorio.
   - Adaptación al área segura inferior de dispositivos móviles.
+  - Animación de entrada del menú inferior tipo Bottom Sheet.
+  - Animación de salida antes de desmontar el componente.
+  - Cierre mediante gesto táctil de arrastre hacia abajo.
+  - Retorno automático a la posición inicial cuando el
+    desplazamiento no supera el umbral de cierre.
+  - Respeto a las preferencias de movimiento reducido.
 
 ### Pendientes
 - Calendario de actividades.
