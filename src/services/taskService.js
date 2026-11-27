@@ -30,3 +30,15 @@ export async function getTasks(signal) {
 
   return response.data.data;
 }
+
+/**
+ * Crea una tarea dentro de un proyecto propio.
+ *
+ * @param {object} taskData
+ * @returns {Promise<object>}
+ */
+export async function createTask(taskData) {
+  const response = await api.post('/api/tareas', taskData);
+
+  return response.data.data;
+}

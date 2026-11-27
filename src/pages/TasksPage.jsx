@@ -1,6 +1,6 @@
 import { useEffect, useReducer, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ClipboardList, RefreshCw, Search } from 'lucide-react';
+import { ClipboardList, Plus, RefreshCw, Search } from 'lucide-react';
 
 import TaskCard from '../components/tasks/TaskCard.jsx';
 import { getTasks } from '../services/taskService.js';
@@ -9,6 +9,8 @@ import {
   initialTasksState,
   tasksReducer,
 } from '../reducers/tasksReducer.js';
+import { useAuth } from '../hooks/useAuth.js';
+import TaskFormModal from '../components/tasks/TaskFormModal.jsx';
 
 import '../styles/tasks.css';
 
@@ -38,6 +40,13 @@ function TasksPage() {
   const [state, dispatch] = useReducer(
     tasksReducer,
     initialTasksState
+  );
+
+  const { user } = useAuth();
+  const [showCreateModal, setShowCreateModal] = useState(false);
+
+  const ownedProjects = state.projects.filter(
+    (project) => Number(project.propietario_id) === Number(user?.id)
   );
 
   const [refreshKey, setRefreshKey] = useState(0);
@@ -92,6 +101,23 @@ function TasksPage() {
     setRefreshKey((previous) => previous + 1);
   };
 
+  const handleTaskCreated = () => {
+    setShowCreateModal(false);
+
+    // Mostramos la tarea creada, independientemente del proyecto seleccionado anteriormente.
+    dispatch({
+      type: 'SET_PROJECT',
+      payload: 'all',
+    });
+
+    dispatch({
+      type: 'SET_SEARCH',
+      payload: '',
+    });
+
+    handleRefresh();
+  };
+
   return (
     <>
       <div className="pagehead">
@@ -102,10 +128,27 @@ function TasksPage() {
           </p>
         </div>
 
-        <span className="tasks-total">
-          <ClipboardList size={18} />
-          {filteredTasks.length} tareas
-        </span>
+        <div className="tasks-header-actions">
+          <span className="tasks-total">
+            <ClipboardList size={18} />
+            {filteredTasks.length} tareas
+          </span>
+
+          <button
+            type="button"
+            className="btn tasks-create-button"
+            onClick={() => setShowCreateModal(true)}
+            disabled={state.loading || ownedProjects.length === 0}
+            title={
+              ownedProjects.length === 0
+                ? 'Necesitas ser propietario de un proyecto'
+                : 'Crear una nueva tarea'
+            }
+          >
+            <Plus size={18} />
+            Nueva tarea
+          </button>
+        </div>
       </div>
 
       <div className="tasks-toolbar">
@@ -232,6 +275,23 @@ function TasksPage() {
             })}
           </div>
         </>
+      )}
+
+      {showCreateModal && (
+        <TaskFormModal
+          projects={ownedProjects}
+          initialProjectId={
+            state.selectedProject !== 'all' &&
+            ownedProjects.some(
+              (project) =>
+                String(project.id) === state.selectedProject
+            )
+              ? state.selectedProject
+              : ''
+          }
+          onClose={() => setShowCreateModal(false)}
+          onCreated={handleTaskCreated}
+        />
       )}
     </>
   );

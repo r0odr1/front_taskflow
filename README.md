@@ -142,8 +142,16 @@ La estructura se completará progresivamente durante el desarrollo.
   - Manejo de estados de carga, errores y ausencia de datos.
   - Gestión del estado de la pantalla mediante `useReducer`.
 
+- **Creación de tareas:** registro de tareas mediante `POST /api/tareas`.
+  - Formulario modal integrado con el tablero Kanban.
+  - Selección de proyectos propios.
+  - Validación de título y campos del formulario.
+  - Selección de estado, prioridad y fecha límite.
+  - Manejo de errores y estado de guardado.
+  - Actualización automática del tablero después del registro.
+
 ### Pendientes
-- Creación, edición, actualización de estado y eliminación de tareas desde el tablero Kanban.
+- Edición, actualización de estado y eliminación de tareas desde el tablero Kanban.
 - Calendario de actividades.
 - Gestión de equipos.
 - Perfil de usuario y ajustes.
