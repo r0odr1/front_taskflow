@@ -15,9 +15,9 @@ import PlaceholderPage from './pages/PlaceholderPage.jsx';
 import DashboardPage from './pages/DashboardPage.jsx';
 import ProjectsPage from './pages/ProjectsPage.jsx';
 import ProjectDetailPage from './pages/ProjectDetailPage.jsx';
+import TasksPage from './pages/TasksPage.jsx';
 
 const pages = [
-  ['/tareas', 'Mis tareas', 'Organiza y consulta tus actividades.'],
   ['/calendario', 'Calendario', 'Consulta las fechas de tus actividades.'],
   ['/equipo', 'Equipo', 'Consulta los miembros de tus proyectos.'],
   ['/mensajes', 'Mensajes', 'Comunicación de TaskFlow.'],
@@ -65,6 +65,7 @@ function App() {
               <Route path="/dashboard" element={<DashboardPage />} />
               <Route path="/proyectos" element={<ProjectsPage />} />
               <Route path="/proyectos/:id" element={<ProjectDetailPage />} />
+              <Route path="/tareas" element={<TasksPage />} />
 
               {pages.map(([path, title, description]) => (
                 <Route

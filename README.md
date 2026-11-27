@@ -134,18 +134,23 @@ La estructura se completará progresivamente durante el desarrollo.
   - Redirección automática al listado después de eliminar.
   - Manejo de errores del servidor.
 
+- **Tablero Kanban:** visualización de tareas agrupadas por estado.
+  - Consulta de tareas mediante `GET /api/tareas`.
+  - Cuatro columnas: pendiente, en progreso, en revisión y completada.
+  - Filtros por proyecto y búsqueda por título.
+  - Visualización de prioridad, responsable y fecha límite.
+  - Manejo de estados de carga, errores y ausencia de datos.
+  - Gestión del estado de la pantalla mediante `useReducer`.
+
 ### Pendientes
-- Gestión de tareas y tablero Kanban.
+- Creación, edición, actualización de estado y eliminación de tareas desde el tablero Kanban.
 - Calendario de actividades.
 - Gestión de equipos.
 - Perfil de usuario y ajustes.
 - Despliegue de la aplicación.
 
-
-**Estado:** frontend en desarrollo, con autenticación JWT,
-Dashboard conectado a la API REST y CRUD de proyectos
-implementado. Pendiente completar la gestión de tareas
-y las funcionalidades adicionales.
+**Estado:** frontend en desarrollo, con autenticación JWT, Dashboard integrado con la API REST, CRUD de proyectos implementado y tablero Kanban con consulta y filtrado
+de tareas. Pendiente completar las operaciones CRUD de tareas.
 
 ## Backend
 

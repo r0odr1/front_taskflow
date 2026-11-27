@@ -17,3 +17,16 @@ export async function getTasksByProject(projectId, signal) {
 
   return response.data.data;
 }
+
+
+/**
+ * Obtiene las tareas accesibles al usuario autenticado.
+ *
+ * @param {AbortSignal} signal
+ * @returns {Promise<object[]>}
+ */
+export async function getTasks(signal) {
+  const response = await api.get('/api/tareas', { signal });
+
+  return response.data.data;
+}
