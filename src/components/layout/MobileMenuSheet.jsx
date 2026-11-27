@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   CalendarDays,
   LogOut,
@@ -18,12 +18,23 @@ const secondaryLinks = [
   { path: '/ajustes', label: 'Ajustes', icon: Settings },
 ];
 
+const CLOSE_THRESHOLD = 90;
+
 /**
- * Panel de opciones secundarias para dispositivos móviles.
+ * Panel inferior con animaciones y gesto de arrastre.
  */
-function MobileMenuSheet({ onClose, onLogout }) {
+function MobileMenuSheet({
+  closing,
+  onRequestClose,
+  onLogout,
+}) {
   const closeButtonRef = useRef(null);
   const dialogRef = useRef(null);
+  const gestureRef = useRef(null);
+
+  const [dragY, setDragY] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [hasOpened, setHasOpened] = useState(false);
 
   useEffect(() => {
     const previousOverflow = document.body.style.overflow;
@@ -34,7 +45,7 @@ function MobileMenuSheet({ onClose, onLogout }) {
 
     const handleKeyDown = (event) => {
       if (event.key === 'Escape') {
-        onClose();
+        onRequestClose();
       }
 
       if (event.key === 'Tab' && dialogRef.current) {
@@ -63,38 +74,129 @@ function MobileMenuSheet({ onClose, onLogout }) {
         previousFocus.focus();
       }
     };
-  }, [onClose]);
+  }, [onRequestClose]);
+
+  /**
+   * Comienza el gesto al tocar la manija superior.
+   */
+  const handlePointerDown = (event) => {
+    if (closing || !event.isPrimary) return;
+
+    gestureRef.current = {
+      pointerId: event.pointerId,
+      startY: event.clientY,
+    };
+
+    setIsDragging(true);
+    setDragY(0);
+
+    event.currentTarget.setPointerCapture(event.pointerId);
+  };
+
+  /**
+   * Sigue el dedo, permitiendo únicamente arrastrar hacia abajo.
+   */
+  const handlePointerMove = (event) => {
+    const gesture = gestureRef.current;
+
+    if (!gesture || gesture.pointerId !== event.pointerId) {
+      return;
+    }
+
+    const distance = event.clientY - gesture.startY;
+
+    setDragY(Math.max(0, Math.min(distance, 500)));
+  };
+
+  /**
+   * Si el desplazamiento es suficiente, cierra el panel.
+   * De lo contrario, regresa suavemente a su posición.
+   */
+  const handlePointerUp = (event) => {
+    const gesture = gestureRef.current;
+
+    if (!gesture || gesture.pointerId !== event.pointerId) {
+      return;
+    }
+
+    const distance = Math.max(0, event.clientY - gesture.startY);
+
+    gestureRef.current = null;
+    setIsDragging(false);
+
+    if (distance >= CLOSE_THRESHOLD) {
+      setDragY(Math.min(distance, 500));
+      onRequestClose();
+    } else {
+      setDragY(0);
+    }
+  };
+
+  const handlePointerCancel = () => {
+    gestureRef.current = null;
+    setIsDragging(false);
+    setDragY(0);
+  };
 
   return (
     <div className="mobile-sheet-layer">
       <button
         type="button"
-        className="mobile-sheet-backdrop"
-        onClick={onClose}
+        className={`mobile-sheet-backdrop ${
+          closing ? 'is-closing' : ''
+        }`}
+        onClick={onRequestClose}
         aria-label="Cerrar menú de opciones"
       />
 
       <section
         ref={dialogRef}
-        className="mobile-sheet"
+        className={`mobile-sheet ${
+          closing ? 'is-closing' : ''
+        } ${isDragging ? 'is-dragging' : ''} ${
+          hasOpened ? 'has-opened' : ''
+        }`}
+        style={{
+          '--sheet-offset': `${dragY}px`,
+        }}
         role="dialog"
         aria-modal="true"
         aria-labelledby="mobile-sheet-title"
+        onAnimationEnd={(event) => {
+          if (event.animationName === 'taskflow-sheet-in') {
+            setHasOpened(true);
+          }
+        }}
       >
-        <div className="mobile-sheet-handle" aria-hidden="true" />
+        <div
+          className="mobile-sheet-drag-area"
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={handlePointerUp}
+          onPointerCancel={handlePointerCancel}
+          aria-hidden="true"
+        >
+          <div className="mobile-sheet-handle" />
+        </div>
 
         <div className="mobile-sheet-header">
           <div>
-            <h2 id="mobile-sheet-title">Más opciones</h2>
-            <p>Explora otras secciones de TaskFlow.</p>
+            <h2 id="mobile-sheet-title">
+              Más opciones
+            </h2>
+
+            <p>
+              Explora otras secciones de TaskFlow.
+            </p>
           </div>
 
           <button
             ref={closeButtonRef}
             type="button"
             className="mobile-sheet-close"
-            onClick={onClose}
+            onClick={onRequestClose}
             aria-label="Cerrar menú"
+            disabled={closing}
           >
             <X size={20} />
           </button>
@@ -108,9 +210,10 @@ function MobileMenuSheet({ onClose, onLogout }) {
             <NavLink
               key={path}
               to={path}
-              onClick={onClose}
               className={({ isActive }) =>
-                `mobile-sheet-link ${isActive ? 'active' : ''}`
+                `mobile-sheet-link ${
+                  isActive ? 'active' : ''
+                }`
               }
             >
               <Icon size={23} strokeWidth={1.8} />
