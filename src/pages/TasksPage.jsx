@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { ClipboardList, Plus, RefreshCw, Search } from 'lucide-react';
 
 import TaskCard from '../components/tasks/TaskCard.jsx';
-import { getTasks } from '../services/taskService.js';
+import { getTasks, updateTask } from '../services/taskService.js';
 import { getProjects } from '../services/projectService.js';
 import {
   initialTasksState,
@@ -45,6 +45,9 @@ function TasksPage() {
   const { user } = useAuth();
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
+
+  const [updatingTaskId, setUpdatingTaskId] = useState(null);
+  const [statusError, setStatusError] = useState('');
 
   const ownedProjects = state.projects.filter(
     (project) => Number(project.propietario_id) === Number(user?.id)
@@ -124,6 +127,54 @@ function TasksPage() {
     handleRefresh();
   };
 
+  /**
+   * Cambia el estado de una tarea sin abrir el formulario.
+   * Conserva el resto de sus datos originales.
+   */
+  const handleStatusChange = async (task, newStatus) => {
+    if (task.estado === newStatus || updatingTaskId !== null) {
+      return;
+    }
+
+    const allowedStatuses = [
+      'PENDIENTE',
+      'EN_PROGRESO',
+      'EN_REVISION',
+      'COMPLETADA',
+    ];
+
+    const isOwner = ownedProjects.some(
+      (project) =>
+        Number(project.id) === Number(task.proyecto_id)
+    );
+
+    if (!isOwner || !allowedStatuses.includes(newStatus)) {
+      return;
+    }
+
+    setUpdatingTaskId(task.id);
+    setStatusError('');
+
+    try {
+      await updateTask(task.id, {
+        titulo: task.titulo,
+        descripcion: task.descripcion ?? null,
+        estado: newStatus,
+        prioridad: task.prioridad,
+        fecha_limite: task.fecha_limite
+          ? String(task.fecha_limite).slice(0, 10)
+          : null,
+        asignado_id: task.asignado_id ?? null,
+      });
+
+      // Recargamos los datos reales desde PostgreSQL.
+      handleRefresh();
+    } catch (err) {
+      setStatusError(err.response?.data?.message || 'No fue posible actualizar el estado de la tarea.');
+    } finally {
+      setUpdatingTaskId(null);
+    }
+  };
 
   return (
     <>
@@ -284,6 +335,15 @@ function TasksPage() {
                               ? setEditingTask
                               : undefined
                           }
+                          onStatusChange={
+                            ownedProjects.some(
+                              (project) =>
+                                Number(project.id) === Number(task.proyecto_id)
+                            )
+                              ? handleStatusChange
+                              : undefined
+                          }
+                          updating={updatingTaskId === task.id}
                         />
                       ))
                     )}
@@ -320,6 +380,12 @@ function TasksPage() {
           onClose={() => setEditingTask(null)}
           onUpdated={handleTaskUpdated}
         />
+      )}
+
+      {statusError && (
+        <div className="project-form-error tasks-status-error" role="alert">
+          {statusError}
+        </div>
       )}
     </>
   );

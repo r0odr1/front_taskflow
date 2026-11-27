@@ -3,7 +3,7 @@ import { CalendarDays, FolderKanban, Pencil, UserRound } from 'lucide-react';
 /**
  * Tarjeta de tarea dentro del tablero Kanban.
  */
-function TaskCard({ task, onEdit }) {
+function TaskCard({ task, onEdit, onStatusChange, updating = false, }) {
   const formatDate = (value) => {
     if (!value) return 'Sin fecha';
 
@@ -25,6 +25,13 @@ function TaskCard({ task, onEdit }) {
     MEDIA: 'Media',
     ALTA: 'Alta',
   };
+
+  const statusOptions = [
+    { value: 'PENDIENTE', label: 'Por hacer' },
+    { value: 'EN_PROGRESO', label: 'En progreso' },
+    { value: 'EN_REVISION', label: 'En revisión' },
+    { value: 'COMPLETADA', label: 'Completada' },
+  ];
 
   return (
     <article className="task-card">
@@ -50,6 +57,39 @@ function TaskCard({ task, onEdit }) {
           <Pencil size={14} />
           Editar tarea
         </button>
+      )}
+
+      {onStatusChange && (
+        <div className="task-status-control">
+          <label htmlFor={`task-status-${task.id}`}>
+            Estado
+          </label>
+
+          <select
+            id={`task-status-${task.id}`}
+            value={task.estado}
+            disabled={updating}
+            onChange={(event) =>
+              onStatusChange(task, event.target.value)
+            }
+            aria-label={`Cambiar estado de ${task.titulo}`}
+          >
+            {statusOptions.map((option) => (
+              <option
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            ))}
+          </select>
+
+          {updating && (
+            <span className="task-status-saving" role="status">
+              Guardando...
+            </span>
+          )}
+        </div>
       )}
 
       <p className="task-card-description">

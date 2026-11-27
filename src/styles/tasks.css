@@ -316,3 +316,47 @@
   outline-offset: 4px;
   border-radius: 3px;
 }
+
+/* Cambio rápido de estado de tareas. */
+.task-status-control {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-bottom: 15px;
+}
+
+.task-status-control label {
+  color: #65758d;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.task-status-control select {
+  width: 100%;
+  padding: 9px 10px;
+  border: 1px solid #e3eaf5;
+  border-radius: 8px;
+  background: #fff;
+  color: #182a45;
+  font: inherit;
+  font-size: 12px;
+}
+
+.task-status-control select:focus-visible {
+  outline: 2px solid #2875e7;
+  outline-offset: 2px;
+}
+
+.task-status-control select:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
+.task-status-saving {
+  color: #2875e7;
+  font-size: 11px;
+}
+
+.tasks-status-error {
+  margin-bottom: 18px;
+}

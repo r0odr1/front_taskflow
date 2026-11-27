@@ -159,8 +159,16 @@ La estructura se completará progresivamente durante el desarrollo.
   - Validación de campos y manejo de errores.
   - Actualización del tablero Kanban después de guardar.
 
+- **Cambio rápido de estado:** actualización del estado de las tareas desde las tarjetas del tablero Kanban.
+  - Integración con `PUT /api/tareas/:id`.
+  - Selección entre pendiente, en progreso, en revisión y completada.
+  - Conservación de los demás datos de la tarea.
+  - Restricción de la operación a proyectos propios.
+  - Actualización automática del tablero después de guardar.
+  - Manejo de errores durante la actualización.
+
 ### Pendientes
-- Cambio rápido de estado y eliminación de tareas desde el tablero Kanban.
+- Eliminación de tareas desde el tablero Kanban.
 - Calendario de actividades.
 - Gestión de equipos.
 - Perfil de usuario y ajustes.
