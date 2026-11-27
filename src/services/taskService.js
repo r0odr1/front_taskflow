@@ -42,3 +42,19 @@ export async function createTask(taskData) {
 
   return response.data.data;
 }
+
+/**
+ * Actualiza una tarea de un proyecto propio.
+ *
+ * @param {number} taskId
+ * @param {object} taskData
+ * @returns {Promise<object>}
+ */
+export async function updateTask(taskId, taskData) {
+  const response = await api.put(
+    `/api/tareas/${taskId}`,
+    taskData
+  );
+
+  return response.data.data;
+}

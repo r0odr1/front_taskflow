@@ -150,8 +150,17 @@ La estructura se completará progresivamente durante el desarrollo.
   - Manejo de errores y estado de guardado.
   - Actualización automática del tablero después del registro.
 
+
+- **Edición de tareas:** actualización de tareas mediante `PUT /api/tareas/:id`.
+  - Reutilización del formulario de creación y edición.
+  - Precarga de título, descripción, estado, prioridad y fecha límite.
+  - Restricción de edición a proyectos propios.
+  - Conservación del proyecto y responsable existentes.
+  - Validación de campos y manejo de errores.
+  - Actualización del tablero Kanban después de guardar.
+
 ### Pendientes
-- Edición, actualización de estado y eliminación de tareas desde el tablero Kanban.
+- Cambio rápido de estado y eliminación de tareas desde el tablero Kanban.
 - Calendario de actividades.
 - Gestión de equipos.
 - Perfil de usuario y ajustes.

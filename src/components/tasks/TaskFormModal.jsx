@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
 import { X } from 'lucide-react';
 
-import { createTask } from '../../services/taskService.js';
+import {
+  createTask,
+  updateTask,
+} from '../../services/taskService.js';
 
 const initialForm = {
   proyecto_id: '',
@@ -12,21 +15,41 @@ const initialForm = {
   fecha_limite: '',
 };
 
+function toDateInput(value) {
+  return value ? String(value).slice(0, 10) : '';
+}
+
 /**
- * Formulario para registrar tareas en proyectos propios.
+ * Formulario reutilizable para crear y editar tareas.
+ * El proyecto y el responsable se conservan al editar.
  */
 function TaskFormModal({
   projects,
+  task = null,
   initialProjectId = '',
   onClose,
   onCreated,
+  onUpdated,
 }) {
-  const [form, setForm] = useState(() => ({
-    ...initialForm,
-    proyecto_id: initialProjectId
-      ? String(initialProjectId)
-      : String(projects[0]?.id ?? ''),
-  }));
+  const isEditing = Boolean(task);
+
+  const [form, setForm] = useState(() =>
+    task
+      ? {
+          proyecto_id: String(task.proyecto_id),
+          titulo: task.titulo ?? '',
+          descripcion: task.descripcion ?? '',
+          estado: task.estado ?? 'PENDIENTE',
+          prioridad: task.prioridad ?? 'MEDIA',
+          fecha_limite: toDateInput(task.fecha_limite),
+        }
+      : {
+          ...initialForm,
+          proyecto_id: initialProjectId
+            ? String(initialProjectId)
+            : String(projects[0]?.id ?? ''),
+        }
+  );
 
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
@@ -64,13 +87,8 @@ function TaskFormModal({
     const titulo = form.titulo.trim();
     const projectId = Number(form.proyecto_id);
 
-    if (!titulo) {
-      setError('El título de la tarea es obligatorio.');
-      return;
-    }
-
-    if (titulo.length > 150) {
-      setError('El título no puede superar 150 caracteres.');
+    if (!titulo || titulo.length > 150) {
+      setError('El título debe tener entre 1 y 150 caracteres.');
       return;
     }
 
@@ -79,28 +97,44 @@ function TaskFormModal({
       return;
     }
 
-    if (!Number.isSafeInteger(projectId) || !projects.some((project) => Number(project.id) === projectId)) {
+    if (!Number.isSafeInteger(projectId) || projectId <= 0 || !projects.some((project) => Number(project.id) === projectId)) {
       setError('Selecciona un proyecto válido.');
       return;
     }
 
+    // Datos obligatorios tanto para POST como para PUT.
     const taskData = {
-      proyecto_id: projectId,
       titulo,
       descripcion: form.descripcion.trim() || null,
       estado: form.estado,
       prioridad: form.prioridad,
       fecha_limite: form.fecha_limite || null,
-      asignado_id: null,
+
+      // Evita perder el responsable al editar.
+      asignado_id: isEditing
+        ? task.asignado_id ?? null
+        : null,
     };
+
+    // El backend no permite cambiar de proyecto en PUT.
+    if (!isEditing) {
+      taskData.proyecto_id = projectId;
+    }
 
     setSaving(true);
 
     try {
-      const task = await createTask(taskData);
-      onCreated(task);
+      const savedTask = isEditing
+        ? await updateTask(task.id, taskData)
+        : await createTask(taskData);
+
+      if (isEditing) {
+        onUpdated(savedTask);
+      } else {
+        onCreated(savedTask);
+      }
     } catch (err) {
-      setError(err.response?.data?.message || 'No fue posible crear la tarea.');
+      setError(err.response?.data?.message || 'No fue posible guardar la tarea.');
     } finally {
       setSaving(false);
     }
@@ -117,11 +151,13 @@ function TaskFormModal({
         <div className="project-modal-header">
           <div>
             <h2 id="task-modal-title">
-              Nueva tarea
+              {isEditing ? 'Editar tarea' : 'Nueva tarea'}
             </h2>
 
             <p className="sub">
-              Registra una actividad dentro de un proyecto.
+              {isEditing
+                ? 'Actualiza la información de la tarea.'
+                : 'Registra una actividad dentro de un proyecto.'}
             </p>
           </div>
 
@@ -148,14 +184,16 @@ function TaskFormModal({
               value={form.proyecto_id}
               onChange={handleChange}
               required
-              disabled={saving}
+              disabled={saving || isEditing}
             >
-              <option value="">Seleccionar proyecto</option>
+              <option value="">
+                Seleccionar proyecto
+              </option>
 
               {projects.map((project) => (
                 <option
                   key={project.id}
-                  value={project.id}
+                  value={String(project.id)}
                 >
                   {project.nombre}
                 </option>
@@ -172,13 +210,13 @@ function TaskFormModal({
               id="task-title"
               name="titulo"
               type="text"
-              value={form.titulo}
-              onChange={handleChange}
               maxLength={150}
               required
               autoFocus
-              placeholder="Ej. Implementar autenticación"
+              value={form.titulo}
+              onChange={handleChange}
               disabled={saving}
+              placeholder="Ej. Implementar autenticación"
             />
           </div>
 
@@ -190,12 +228,12 @@ function TaskFormModal({
             <textarea
               id="task-description"
               name="descripcion"
+              rows={4}
+              maxLength={5000}
               value={form.descripcion}
               onChange={handleChange}
-              maxLength={5000}
-              rows={4}
-              placeholder="Describe la actividad..."
               disabled={saving}
+              placeholder="Describe la actividad..."
             />
           </div>
 
@@ -212,10 +250,18 @@ function TaskFormModal({
                 onChange={handleChange}
                 disabled={saving}
               >
-                <option value="PENDIENTE">Por hacer</option>
-                <option value="EN_PROGRESO">En progreso</option>
-                <option value="EN_REVISION">En revisión</option>
-                <option value="COMPLETADA">Completada</option>
+                <option value="PENDIENTE">
+                  Por hacer
+                </option>
+                <option value="EN_PROGRESO">
+                  En progreso
+                </option>
+                <option value="EN_REVISION">
+                  En revisión
+                </option>
+                <option value="COMPLETADA">
+                  Completada
+                </option>
               </select>
             </div>
 
@@ -274,7 +320,11 @@ function TaskFormModal({
               className="btn"
               disabled={saving}
             >
-              {saving ? 'Guardando...' : 'Crear tarea'}
+              {saving
+                ? 'Guardando...'
+                : isEditing
+                  ? 'Guardar cambios'
+                  : 'Crear tarea'}
             </button>
           </div>
         </form>

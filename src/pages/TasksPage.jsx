@@ -44,6 +44,7 @@ function TasksPage() {
 
   const { user } = useAuth();
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [editingTask, setEditingTask] = useState(null);
 
   const ownedProjects = state.projects.filter(
     (project) => Number(project.propietario_id) === Number(user?.id)
@@ -117,6 +118,12 @@ function TasksPage() {
 
     handleRefresh();
   };
+
+  const handleTaskUpdated = () => {
+    setEditingTask(null);
+    handleRefresh();
+  };
+
 
   return (
     <>
@@ -266,7 +273,18 @@ function TasksPage() {
                       </p>
                     ) : (
                       columnTasks.map((task) => (
-                        <TaskCard key={task.id} task={task} />
+                        <TaskCard
+                          key={task.id}
+                          task={task}
+                          onEdit={
+                            ownedProjects.some(
+                              (project) =>
+                                Number(project.id) === Number(task.proyecto_id)
+                            )
+                              ? setEditingTask
+                              : undefined
+                          }
+                        />
                       ))
                     )}
                   </div>
@@ -291,6 +309,16 @@ function TasksPage() {
           }
           onClose={() => setShowCreateModal(false)}
           onCreated={handleTaskCreated}
+        />
+      )}
+
+      {editingTask && (
+        <TaskFormModal
+          key={editingTask.id}
+          task={editingTask}
+          projects={ownedProjects}
+          onClose={() => setEditingTask(null)}
+          onUpdated={handleTaskUpdated}
         />
       )}
     </>

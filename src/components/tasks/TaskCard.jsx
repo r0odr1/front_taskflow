@@ -1,9 +1,9 @@
-import { CalendarDays, FolderKanban, UserRound } from 'lucide-react';
+import { CalendarDays, FolderKanban, Pencil, UserRound } from 'lucide-react';
 
 /**
  * Tarjeta de tarea dentro del tablero Kanban.
  */
-function TaskCard({ task }) {
+function TaskCard({ task, onEdit }) {
   const formatDate = (value) => {
     if (!value) return 'Sin fecha';
 
@@ -39,6 +39,18 @@ function TaskCard({ task }) {
       </div>
 
       <h3>{task.titulo}</h3>
+
+      {onEdit && (
+        <button
+          type="button"
+          className="task-card-edit"
+          onClick={() => onEdit(task)}
+          aria-label={`Editar tarea ${task.titulo}`}
+        >
+          <Pencil size={14} />
+          Editar tarea
+        </button>
+      )}
 
       <p className="task-card-description">
         {task.descripcion || 'Sin descripción registrada.'}

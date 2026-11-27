@@ -291,3 +291,28 @@
     width: 100%;
   }
 }
+
+/* Acción para editar tareas. */
+.task-card-edit {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #2875e7;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.task-card-edit:hover {
+  text-decoration: underline;
+}
+
+.task-card-edit:focus-visible {
+  outline: 2px solid #2875e7;
+  outline-offset: 4px;
+  border-radius: 3px;
+}
