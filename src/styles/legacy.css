@@ -142,6 +142,46 @@ button {
   margin-top: auto;
 }
 
+@media (min-width: 701px) and (max-height: 700px) {
+  .side {
+    padding-bottom: 14px;
+  }
+
+  .side > .brand {
+    height: 68px;
+    margin-bottom: 16px;
+  }
+
+  .side small:not(:first-of-type) {
+    margin-top: 16px;
+  }
+
+  .side .nav {
+    min-height: 40px;
+    margin: 1px 0;
+  }
+}
+
+@media (min-width: 701px) and (max-height: 540px) {
+  .side {
+    padding-bottom: 10px;
+  }
+
+  .side > .brand {
+    height: 60px;
+    margin-bottom: 12px;
+  }
+
+  .side small:not(:first-of-type) {
+    margin-top: 12px;
+  }
+
+  .side .nav {
+    min-height: 36px;
+    margin: 0;
+  }
+}
+
 /* Cabecera y contenido */
 .main {
   flex: 1;

@@ -520,6 +520,14 @@
   gap: 14px;
 }
 
+.project-edit-button,
+.project-delete-button {
+  width: 180px;
+  height: 42px;
+  padding: 0 12px;
+  white-space: nowrap;
+}
+
 .project-edit-button {
   display: inline-flex;
   align-items: center;
@@ -529,7 +537,23 @@
 
 @media (max-width: 700px) {
   .project-detail-actions {
-    justify-content: flex-start;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: center;
+    gap: 8px;
+  }
+
+  .project-detail-actions > .tag {
+    grid-column: 1 / -1;
+  }
+
+  .project-detail-actions > .project-edit-button,
+  .project-detail-actions > .project-delete-button {
+    width: 100%;
+    min-width: 0;
+    padding: 0 6px;
+    gap: 5px;
+    font-size: 12px;
   }
 }
 
