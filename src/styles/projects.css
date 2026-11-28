@@ -621,3 +621,15 @@
   opacity: 0.55;
   cursor: not-allowed;
 }
+
+@media (min-width: 701px) {
+  .project-delete-modal .project-modal-actions .btn {
+    width: 132px;
+    height: 44px;
+    padding: 4px 10px;
+  }
+
+  .project-delete-confirm {
+    flex-direction: row;
+  }
+}

@@ -128,7 +128,7 @@ function DeleteProjectModal({ project, onClose, onDeleted }) {
               <Trash2 size={16} />
               {deleting
                 ? 'Eliminando...'
-                : 'Eliminar definitivamente'}
+                : 'Eliminar'}
             </button>
           </div>
         </form>
