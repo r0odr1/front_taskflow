@@ -16,12 +16,12 @@ import DashboardPage from './pages/DashboardPage.jsx';
 import ProjectsPage from './pages/ProjectsPage.jsx';
 import ProjectDetailPage from './pages/ProjectDetailPage.jsx';
 import TasksPage from './pages/TasksPage.jsx';
+import ProfilePage from './pages/ProfilePage.jsx';
 
 const pages = [
   ['/calendario', 'Calendario', 'Consulta las fechas de tus actividades.'],
   ['/equipo', 'Equipo', 'Consulta los miembros de tus proyectos.'],
   ['/mensajes', 'Mensajes', 'Comunicación de TaskFlow.'],
-  ['/perfil', 'Mi perfil', 'Información de tu cuenta.'],
   ['/ajustes', 'Ajustes', 'Preferencias de la aplicación.'],
 ];
 
@@ -66,6 +66,7 @@ function App() {
               <Route path="/proyectos" element={<ProjectsPage />} />
               <Route path="/proyectos/:id" element={<ProjectDetailPage />} />
               <Route path="/tareas" element={<TasksPage />} />
+              <Route path="/perfil" element={<ProfilePage />} />
 
               {pages.map(([path, title, description]) => (
                 <Route

@@ -5,6 +5,7 @@ import './index.css';
 import './styles/legacy.css';
 import './styles/layout.css';
 import './styles/mobile-navigation.css';
+import './styles/profile.css';
 
 import App from './App.jsx';
 
